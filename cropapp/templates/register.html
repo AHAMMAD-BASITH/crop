@@ -1,0 +1,16 @@
+<html>
+  <head>
+    <title>User Form</title>
+  </head>
+  <body>
+    <center>
+      <h1>Create User</h1>
+      <form method="post">
+        {% csrf_token %} 
+        {{ detl.as_p }}
+        {{ paswrd.as_p }}
+        <button type="submit">Submit</button>
+      </form>
+    </center>
+  </body>
+</html>

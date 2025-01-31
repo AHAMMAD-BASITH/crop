@@ -1,0 +1,15 @@
+<html>
+  <head>
+    <title>User Form</title>
+  </head>
+  <body>
+    <center>
+      <h1>Create User</h1>
+      <form method="post" enctype="multipart/form-data">
+        {% csrf_token %} 
+        {{ product.as_p }}                          
+        <button type="submit">Submit</button>
+      </form>
+    </center>
+  </body>
+</html>
