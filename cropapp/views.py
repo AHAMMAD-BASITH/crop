@@ -1,6 +1,6 @@
 from django.shortcuts import render,redirect,get_object_or_404
 from .models import login,user,public_user,products,cart
-from .forms import Reg_Form,login_form,login_verify,user_edit_form,login_edit_form,public_Form,products_form
+from .forms import Reg_Form,login_form,login_verify,user_edit_form,login_edit_form,public_Form,products_form,payment_form
 from django.contrib import messages
 
 # Create your views here.
@@ -19,6 +19,8 @@ def login_page(request):
 
 def public_home(request):
     return render( request ,'public.html')
+
+
 
 def register(request):
     if request.method == 'POST':
@@ -42,7 +44,7 @@ def public_register(request):
         if detl.is_valid() and paswrd.is_valid():
             login_data=paswrd.save(commit=False)
             login_data.user_type = 'public'
-            login_data.save()
+            login_data.save() 
             reg_data=detl.save(commit=False)
             reg_data.login_id=login_data
 
@@ -176,8 +178,6 @@ def add_to_cart(request,p_id):
     u_id=request.session.get('id')
     user_login_data = get_object_or_404(login, id=u_id)
     product=get_object_or_404(products, id=p_id)
-    print(user_login_data)
-    print(product)
     if cart.objects.filter(product_id=product,user_id=user_login_data).exists():
         messages.success(request,'product already exists')
     else:
@@ -187,3 +187,34 @@ def add_to_cart(request,p_id):
         )
     return redirect('public_pro_view')
 
+def cart_view(request):
+    user_id=request.session.get('id')
+    user_login_data = get_object_or_404(login,id=user_id)
+    cart_product=cart.objects.filter(user_id=user_login_data)
+    return render(request,'cart.html',{'cart_products' : cart_product})
+
+def cart_product_del(request,id):
+    cart_product=get_object_or_404(cart,id=id)
+    cart_product.delete()
+    return redirect('cart_view')
+
+def payment_dtel(request,id):
+    user_id=request.session.get('id')
+    user_login_data = get_object_or_404(login,id=user_id)
+    if request.method=='POST':
+
+        payment=payment_form(request.POST)
+        if payment.is_valid():
+
+            payment_data=payment.save(commit=False)
+            payment_data.login_id=user_login_data
+            payment_data.cart_id=id
+            payment_data.save()
+            return redirect('cart_view')
+    else:
+        payment=payment_form()
+
+    if not payment.is_valid():
+        print(payment.errors)  # This will show why the form is not valid
+
+    return render( request ,'payment.html',{'payment':payment})

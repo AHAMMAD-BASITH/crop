@@ -29,3 +29,13 @@ class cart(models.Model):
     user_id = models.ForeignKey(login,on_delete=models.CASCADE,null=True,blank=True)
     payment_status = models.IntegerField(default=0)
     current_date = models.DateTimeField(auto_now_add=True)
+
+class payment(models.Model):
+    onwer_name = models.CharField(max_length=25)
+    card_no = models.CharField(max_length=15)
+    cvv = models.CharField(max_length=5)
+    exp_date = models.DateField(null=True,blank=True)
+    amount = models.IntegerField(default=0)
+    cart_id = models.ForeignKey(cart,on_delete=models.CASCADE,null=True,blank=True)
+    login_id = models.ForeignKey(login,on_delete=models.CASCADE,null=True,blank=True)
+    current_date = models.DateTimeField(auto_now_add=True)

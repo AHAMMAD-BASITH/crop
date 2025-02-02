@@ -1,5 +1,5 @@
 from django import forms
-from .models import login,user,public_user,products
+from .models import login,user,public_user,products,payment
 
 class Reg_Form(forms.ModelForm):
 
@@ -50,3 +50,13 @@ class products_form(forms.ModelForm):
     class Meta:
         model=products
         fields=['category','name','image','price']
+
+
+class payment_form(forms.ModelForm):
+    exp_date = forms.DateField(
+        widget=forms.DateInput(attrs={'type': 'date', 'placeholder': 'DD-MM-YYYY'}),
+        input_formats=['%d-%m-%Y']  # Accept DD-MM-YYYY format
+    )
+    class Meta:
+        model=payment
+        fields=['onwer_name','card_no','cvv','exp_date']
