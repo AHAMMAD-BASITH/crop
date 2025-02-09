@@ -53,10 +53,6 @@ class products_form(forms.ModelForm):
 
 
 class payment_form(forms.ModelForm):
-    exp_date = forms.DateField(
-        widget=forms.DateInput(attrs={'type': 'date', 'placeholder': 'DD-MM-YYYY'}),
-        input_formats=['%d-%m-%Y']  # Accept DD-MM-YYYY format
-    )
     class Meta:
         model=payment
-        fields=['onwer_name','card_no','cvv','exp_date']
+        fields=['onwer_name','card_no','cvv','exp_month','exp_year']

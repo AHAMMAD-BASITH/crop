@@ -27,11 +27,13 @@ def register(request):
         detl=Reg_Form(request.POST)
         paswrd=login_form(request.POST)
         if detl.is_valid() and paswrd.is_valid():
-            login_data=paswrd.save()
+            login_data=paswrd.save(commit=False)
+            login_data.user_type = 'farmer'
+            login_data.save()
             reg_data=detl.save(commit=False)
             reg_data.login_id=login_data
             reg_data.save()
-            return redirect ('/user')
+            return redirect ('farmer')
     else:
         detl=Reg_Form()
         paswrd=login_form()
@@ -133,7 +135,7 @@ def public_profile_view(request):
 
 
 def product_add(request):
-    user_id=request.session.get('id')
+    user_id=request.session.get('farmer_id')
     user_login_data = get_object_or_404(login,id=user_id)
     if request.method=='POST':
 
@@ -149,7 +151,7 @@ def product_add(request):
     return render(request,'products.html',{'product':product})
 
 def product_view(request):
-    user_id=request.session.get('id')
+    user_id=request.session.get('farmer_id')
     user_login_data = get_object_or_404(login,id=user_id)
     all_product=products.objects.filter(login_id=user_login_data)
     return render(request,'product_view.html',{'all_products' : all_product})
@@ -175,7 +177,7 @@ def public_pro_view(request):
     return render(request,'public_product_view.html',{'all_products' : all_product})
 
 def add_to_cart(request,p_id):
-    u_id=request.session.get('id')
+    u_id=request.session.get('public_id')
     user_login_data = get_object_or_404(login, id=u_id)
     product=get_object_or_404(products, id=p_id)
     if cart.objects.filter(product_id=product,user_id=user_login_data).exists():
@@ -188,10 +190,11 @@ def add_to_cart(request,p_id):
     return redirect('public_pro_view')
 
 def cart_view(request):
-    user_id=request.session.get('id')
+    user_id=request.session.get('public_id')
     user_login_data = get_object_or_404(login,id=user_id)
-    cart_product=cart.objects.filter(user_id=user_login_data)
+    cart_product=cart.objects.filter(user_id=user_login_data,payment_status=0)
     return render(request,'cart.html',{'cart_products' : cart_product})
+
 
 def cart_product_del(request,id):
     cart_product=get_object_or_404(cart,id=id)
@@ -199,8 +202,9 @@ def cart_product_del(request,id):
     return redirect('cart_view')
 
 def payment_dtel(request,id):
-    user_id=request.session.get('id')
+    user_id=request.session.get('public_id')
     user_login_data = get_object_or_404(login,id=user_id)
+    crt_id = get_object_or_404(cart,id=id)
     if request.method=='POST':
 
         payment=payment_form(request.POST)
@@ -208,13 +212,25 @@ def payment_dtel(request,id):
 
             payment_data=payment.save(commit=False)
             payment_data.login_id=user_login_data
-            payment_data.cart_id=id
+            payment_data.cart_id=crt_id
             payment_data.save()
+            # c=cart.objects.get(id=crt_id)
+            c= get_object_or_404(cart,id=id)
+            c.payment_status=1
+            c.save()
             return redirect('cart_view')
     else:
         payment=payment_form()
 
-    if not payment.is_valid():
-        print(payment.errors)  # This will show why the form is not valid
-
     return render( request ,'payment.html',{'payment':payment})
+
+def my_order(request):
+    return render(request,'my_orders.html')
+
+
+
+def farmer_order_view(request):
+    farmer = request.session.get('farmer_id')
+    farmer_id = get_object_or_404(login, id=farmer)
+    prt = cart.objects.filter(product_id__login_id=farmer_id, payment_status=1).select_related('user_id__us')
+    return render(request, 'farmer_order_view.html', {'prts': prt})

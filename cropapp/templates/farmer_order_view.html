@@ -36,13 +36,6 @@
     <div id="main-wrapper">
       <div class="content-body">
         <div class="container-fluid">
-          {% if messages %}
-          <ul>
-            {% for message in messages %}
-            <li class="text-danger font-weight-bold">{{ message }}</li>
-            {% endfor %}
-          </ul>
-          {% endif %}
           <!-- row -->
 
           <div class="row">
@@ -60,39 +53,26 @@
                     >
                       <thead>
                         <tr>
-                          <th>Image</th>
-                          <th>Category</th>
-                          <th>Name</th>
+                          <th>product name</th>
+                          <th>Buyer Name</th>
                           <th>price</th>
-                          <th></th>
+                          <th>Image</th>
                         </tr>
                       </thead>
                       <tbody>
-                        {% for all_product in all_products %}
+                        {% for prt in prts %}
                         <tr>
+                          <td>{{ prt.product_id.name }}</td>
+                          <td>{{ prt.user_id.us.name }}</td> 
+                          <td>{{ prt.product_id.price }}</td>
                           <td>
-                            <img
-                              src="/media/{{all_product.image}}"
-                              width="90px"
-                              alt=""
-                            />
-                          </td>
-                          <td>{{all_product.category}}</td>
-                          <td>{{all_product.name}}</td>
-                          <td>{{all_product.price}}</td>
-                          <td>
-                            <a
-                              href="{% url 'cart' all_product.id %}"
-                              class="btn btn-primary"
-                            >
-                              Add to Cart
-                            </a>
+                            <img src="/media/{{ prt.product_id.image }}" width="90px" alt="" />
                           </td>
                         </tr>
                         {% endfor %}
                       </tbody>
                     </table>
-                    <a class="btn btn-primary m-3" href="{% url 'cart_view' %}">Go To Cart</a>
+                    <a class="btn btn-primary m-3" href="{% url 'cart_view' %}">Cart</a>
                   </div>
                 </div>
               </div>
