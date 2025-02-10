@@ -36,20 +36,13 @@
     <div id="main-wrapper">
       <div class="content-body">
         <div class="container-fluid">
-          {% if messages %}
-          <ul>
-            {% for message in messages %}
-            <li class="text-danger font-weight-bold">{{ message }}</li>
-            {% endfor %}
-          </ul>
-          {% endif %}
           <!-- row -->
 
           <div class="row">
             <div class="col-12">
               <div class="card">
                 <div class="card-header">
-                  <h4 class="card-title">cart Datatable</h4>
+                  <h4 class="card-title">farmer Datatable</h4>
                 </div>
                 <div class="card-body">
                   <div class="table-responsive">
@@ -60,45 +53,26 @@
                     >
                       <thead>
                         <tr>
-                          <th>Image</th>
-                          <th>Category</th>
-                          <th>Name</th>
+                          <th>product name</th>
+                          <th>Buyer Name</th>
                           <th>price</th>
-                          <th></th>
+                          <th>Image</th>
                         </tr>
                       </thead>
                       <tbody>
-            
-                        {% for cart_product in cart_products %}
+                        {% for myord in myords %}
                         <tr>
+                          <td>{{ myord.product_id.name }}</td>
+                          <td>{{ myord.user_id.us.name }}</td> 
+                          <td>{{ myord.product_id.price }}</td>
                           <td>
-                            <img
-                              src="/media/{{cart_product.product_id.image}}"
-                              width="90px"
-                              alt=""
-                            />
-                          </td>
-                          <td>{{cart_product.product_id.category}}</td>
-                          <td>{{cart_product.product_id.name}}</td>
-                          <td>{{cart_product.product_id.price}}</td>
-                          <td>
-                            <a
-                              class="btn btn-danger"
-                              href="{% url 'cart_del' cart_product.id %}"
-                              >Delete</a
-                            >
-                            <a
-                              class="btn btn-success"
-                              href="{% url 'payment' cart_product.id %}"
-                              >Buy</a
-                            >
+                            <img src="/media/{{ myord.product_id.image }}" width="90px" alt="" />
                           </td>
                         </tr>
-                        {% endfor %}  
+                        {% endfor %}
                       </tbody>
                     </table>
-                    <a class="btn btn-primary m-3" href="{% url 'public_pro_view' %}">Add product</a>
-                    <a class="btn btn-primary m-3" href="{% url 'order_view' %}">My Orders</a>
+                    <a class="btn btn-primary m-3" href="{% url 'cart_view' %}">Cart</a>
                   </div>
                 </div>
               </div>

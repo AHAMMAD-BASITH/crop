@@ -33,7 +33,7 @@ def register(request):
             reg_data=detl.save(commit=False)
             reg_data.login_id=login_data
             reg_data.save()
-            return redirect ('farmer')
+            return redirect ('login')
     else:
         detl=Reg_Form()
         paswrd=login_form()
@@ -225,8 +225,10 @@ def payment_dtel(request,id):
     return render( request ,'payment.html',{'payment':payment})
 
 def my_order(request):
-    return render(request,'my_orders.html')
-
+    user=request.session.get('public_id')
+    users_id = get_object_or_404(login,id=user)
+    myord = cart.objects.filter(user_id=users_id,payment_status=1)
+    return render(request,'my_orders.html',{'myords':myord})
 
 
 def farmer_order_view(request):
