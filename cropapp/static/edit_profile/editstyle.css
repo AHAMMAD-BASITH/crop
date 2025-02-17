@@ -1,3 +1,9 @@
+/* General Box-Sizing */
+* {
+    box-sizing: border-box;
+}
+
+/* Body Styling */
 body {
     font-family: Arial, sans-serif;
     margin: 0;
@@ -9,22 +15,25 @@ body {
     background-color: #f4f4f9;
 }
 
+/* Edit Profile Container */
 .edit-profile-container {
     background: #ffffff;
-    padding: 20px; /* Ensures spacing inside the container */
+    padding: 20px;
     border-radius: 8px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    width: 100%;
-    max-width: 400px;
-    box-sizing: border-box; /* Includes padding in width calculation */
+    width: 90%; /* Default width for responsiveness */
+    max-width: 400px; /* Maximum width */
+    margin: 0 auto; /* Center horizontally */
 }
 
+/* Header Styling */
 .edit-profile-container h2 {
     text-align: center;
     color: #333333;
     margin-bottom: 20px;
 }
 
+/* Form Group Styling */
 .form-group {
     margin-bottom: 15px;
 }
@@ -36,12 +45,13 @@ body {
 }
 
 .form-group input {
-    width: calc(100% - 20px); /* Ensures space between input and container edge */
+    width: 100%; /* Full width for consistency */
     padding: 10px;
     border: 1px solid #cccccc;
     border-radius: 5px;
     font-size: 16px;
     box-sizing: border-box; /* Includes padding in input width */
+    margin-bottom: 10px; /* Spacing between fields */
 }
 
 .form-group input:focus {
@@ -50,6 +60,7 @@ body {
     box-shadow: 0 0 4px rgba(0, 123, 255, 0.5);
 }
 
+/* Form Actions (Button Styling) */
 .form-actions {
     text-align: center;
 }
@@ -72,4 +83,17 @@ body {
 .form-actions button:disabled {
     background-color: #cccccc;
     cursor: not-allowed;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .edit-profile-container {
+        width: 100%;
+        padding: 15px;
+    }
+
+    .form-group input {
+        font-size: 14px; /* Slightly smaller text on smaller devices */
+        padding: 8px;
+    }
 }

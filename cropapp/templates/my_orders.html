@@ -54,7 +54,6 @@
                       <thead>
                         <tr>
                           <th>product name</th>
-                          <th>Buyer Name</th>
                           <th>price</th>
                           <th>Image</th>
                         </tr>
@@ -63,16 +62,34 @@
                         {% for myord in myords %}
                         <tr>
                           <td>{{ myord.product_id.name }}</td>
-                          <td>{{ myord.user_id.us.name }}</td> 
                           <td>{{ myord.product_id.price }}</td>
                           <td>
-                            <img src="/media/{{ myord.product_id.image }}" width="90px" alt="" />
+                            <img
+                              src="/media/{{ myord.product_id.image }}"
+                              width="90px"
+                              alt=""
+                            />
+                          </td>
+                          <td>
+                            {% if myord.cancelation_status == 1 %}
+                            <button class="btn btn-secondary m-3" disabled>
+                              Cancelled
+                            </button>
+                            {% else %}
+                            <a
+                              class="btn btn-danger m-3"
+                              href="{% url 'order_cancel' myord.id %}"
+                              >Cancel</a
+                            >
+                            {% endif %}
                           </td>
                         </tr>
                         {% endfor %}
                       </tbody>
                     </table>
-                    <a class="btn btn-primary m-3" href="{% url 'cart_view' %}">Cart</a>
+                    <a class="btn btn-primary m-3" href="{% url 'cart_view' %}"
+                      >Cart</a
+                    >
                   </div>
                 </div>
               </div>

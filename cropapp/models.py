@@ -28,6 +28,7 @@ class cart(models.Model):
     product_id = models.ForeignKey(products,on_delete=models.CASCADE,null=True,blank=True)
     user_id = models.ForeignKey(login,on_delete=models.CASCADE,null=True,blank=True,related_name='users')
     payment_status = models.IntegerField(default=0)
+    cancelation_status = models.IntegerField(default=0)
     current_date = models.DateTimeField(auto_now_add=True)
 
 class payment(models.Model):

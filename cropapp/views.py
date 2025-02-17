@@ -180,7 +180,7 @@ def add_to_cart(request,p_id):
     u_id=request.session.get('public_id')
     user_login_data = get_object_or_404(login, id=u_id)
     product=get_object_or_404(products, id=p_id)
-    if cart.objects.filter(product_id=product,user_id=user_login_data).exists():
+    if cart.objects.filter(product_id=product,user_id=user_login_data,cancelation_status=0).exists():
         messages.success(request,'product already exists')
     else:
         cart_data = cart.objects.create(
@@ -236,3 +236,12 @@ def farmer_order_view(request):
     farmer_id = get_object_or_404(login, id=farmer)
     prt = cart.objects.filter(product_id__login_id=farmer_id, payment_status=1).select_related('user_id__us')
     return render(request, 'farmer_order_view.html', {'prts': prt})
+
+
+def my_order_cancel(request,id):
+    user=request.session.get('public_id')
+    users_id = get_object_or_404(login,id=user)
+    crt_id = get_object_or_404(cart,id=id)
+    crt_id.cancelation_status=1
+    crt_id.save()
+    return redirect('public_order_view')

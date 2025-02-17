@@ -24,7 +24,8 @@ urlpatterns = [
     path('cart_del/<int:id>/',views.cart_product_del,name='cart_del'),
     path('payment/<int:id>/',views.payment_dtel,name='payment'),
     path('order_view/',views.farmer_order_view,name='order_view'),
-    path('public_order_view/',views.my_order,name='public_order_view')
+    path('public_order_view/',views.my_order,name='public_order_view'),
+    path('order_cancel/<int:id>/',views.my_order_cancel,name='order_cancel')
     
     
 ]+static(settings.MEDIA_URL,document_root = settings.MEDIA_ROOT)

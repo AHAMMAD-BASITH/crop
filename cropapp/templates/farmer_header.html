@@ -1,64 +1,102 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Index - AgriCulture Bootstrap Template</title>
+    <meta name="description" content="" />
+    <meta name="keywords" content="" />
 
-<head>
-  <meta charset="utf-8">
-  <meta content="width=device-width, initial-scale=1.0" name="viewport">
-  <title>Index - AgriCulture Bootstrap Template</title>
-  <meta name="description" content="">
-  <meta name="keywords" content="">
+    <!-- Favicons -->
+    <link href="assets/img/favicon.png" rel="icon" />
+    <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon" />
 
-  <!-- Favicons -->
-  <link href="assets/img/favicon.png" rel="icon">
-  <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com" rel="preconnect" />
+    <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,500;1,600;1,700;1,800&family=Marcellus:wght@400&display=swap"
+      rel="stylesheet"
+    />
 
-  <!-- Fonts -->
-  <link href="https://fonts.googleapis.com" rel="preconnect">
-  <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,500;1,600;1,700;1,800&family=Marcellus:wght@400&display=swap" rel="stylesheet">
+    <!-- Vendor CSS Files -->
+    <link
+      href="{% static 'user/assets/vendor/bootstrap/css/bootstrap.min.css' %}"
+      rel="stylesheet"
+    />
+    <link
+      href="{% static 'user/assets/vendor/bootstrap-icons/bootstrap-icons.css ' %}"
+      rel="stylesheet"
+    />
+    <link
+      href="{% static 'user/assets/vendor/aos/aos.css"
+      rel="stylesheet' %}"
+    />
+    <link
+      href="{% static 'user/assets/vendor/swiper/swiper-bundle.min.css' %}"
+      rel="stylesheet"
+    />
+    <link
+      href="{% static 'user/assets/vendor/glightbox/css/glightbox.min.css' %}"
+      rel="stylesheet"
+    />
 
-  <!-- Vendor CSS Files -->
-  <link href="{% static 'user/assets/vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
-  <link href="{% static 'user/assets/vendor/bootstrap-icons/bootstrap-icons.css ' %}" rel="stylesheet">
-  <link href="{% static 'user/assets/vendor/aos/aos.css" rel="stylesheet' %}">
-  <link href="{% static 'user/assets/vendor/swiper/swiper-bundle.min.css' %}" rel="stylesheet">
-  <link href="{% static 'user/assets/vendor/glightbox/css/glightbox.min.css' %}" rel="stylesheet">
+    <!-- Main CSS File -->
+    <link href="{% static 'user/assets/css/main.css' %}" rel="stylesheet" />
 
-  <!-- Main CSS File -->
-  <link href="{% static 'user/assets/css/main.css' %}" rel="stylesheet">
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="{% static 'admin/theme/images/favicon.png' %}"
+    />
+    <!-- Datatable -->
+    <link
+      href="{% static 'admin/theme/vendor/datatables/css/jquery.dataTables.min.css' %}"
+      rel="stylesheet"
+    />
+    <!-- Custom Stylesheet -->
+    <link href="{% static 'admin/theme/css/style.css' %}" rel="stylesheet" />
 
-  <!-- =======================================================
+    <!-- =======================================================
   * Template Name: AgriCulture
   * Template URL: https://bootstrapmade.com/agriculture-bootstrap-website-template/
   * Updated: Aug 07 2024 with Bootstrap v5.3.3
   * Author: BootstrapMade.com
   * License: https://bootstrapmade.com/license/
   ======================================================== -->
-</head>
+  </head>
 
-<body class="index-page">
+  <body class="index-page">
+    <header
+      id="header"
+      class="header d-flex align-items-center position-relative"
+    >
+      <div
+        class="container-fluid container-xl position-relative d-flex align-items-center justify-content-between"
+      >
+        <a href="#" class="logo d-flex align-items-center">
+          <!-- Uncomment the line below if you also wish to use an image logo -->
+          <!-- <img src="{% static 'user/assets/img/logo.png' %}" alt="AgriCulture"> -->
+          <h1 class="sitename">FARMER</h1>
+        </a>
 
-  <header id="header" class="header d-flex align-items-center position-relative">
-    <div class="container-fluid container-xl position-relative d-flex align-items-center justify-content-between">
+        <nav id="navmenu" class="navmenu">
+          <ul>
+            <li><a href="index.html" class="active">Home</a></li>
+            <li><a href="about.html">About Us</a></li>
+            <li><a href="services.html">Our Services</a></li>
+            <li><a href="{% url 'order_view' %}">Orders</a></li>
 
-      <a href="index.html" class="logo d-flex align-items-center">
-        <!-- Uncomment the line below if you also wish to use an image logo -->
-        <img src="{% static 'user/assets/img/logo.png' %}" alt="AgriCulture">
-        <!-- <h1 class="sitename">AgriCulture</h1>  -->
-      </a>
-
-      <nav id="navmenu" class="navmenu">
-        <ul>
-          <li><a href="index.html" class="active">Home</a></li>
-          <li><a href="about.html">About Us</a></li>
-          <li><a href="services.html">Our Services</a></li>
-          <li><a href="testimonials.html">Testimonials</a></li>
-          <li><a href="blog.html">Blog</a></li>
-          <!-- <li class="dropdown"><a href="#"><span>Dropdown</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
-            <ul>
-              <li><a href="#">Dropdown 1</a></li>
-              <li class="dropdown"><a href="#"><span>Deep Dropdown</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
+            <li class="dropdown">
+              <a href="#"
+                ><span>Products</span>
+                <i class="bi bi-chevron-down toggle-dropdown"></i
+              ></a>
+              <ul>
+                <li><a href="{% url 'product_view' %}">View Products</a></li>
+                <!-- <li class="dropdown"><a href="#"><span>Deep Dropdown</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
                 <ul>
                   <li><a href="#">Deep Dropdown 1</a></li>
                   <li><a href="#">Deep Dropdown 2</a></li>
@@ -68,19 +106,43 @@
                 </ul>
               </li>
               <li><a href="#">Dropdown 2</a></li>
-              <li><a href="#">Dropdown 3</a></li>
-              <li><a href="#">Dropdown 4</a></li>
-            </ul>
-          </li> -->
-          <li><a href="{% url 'profile' %}">Profile</a></li>
-        </ul>
-        <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
-      </nav>
+              <li><a href="#">Dropdown 3</a></li> -->
+                <li><a href="{% url 'add_pro' %}">Add Product</a></li>
+              </ul>
+            </li>
 
-    </div>
-  </header>
 
-  <main class="main">
+            <li class="dropdown">
+              <a href="#"
+                ><span>Profile</span>
+                <i class="bi bi-chevron-down toggle-dropdown"></i
+              ></a>
+              <ul>
+                <li><a href="{% url 'profile' %}">Edit</a></li>
+                <!-- <li class="dropdown"><a href="#"><span>Deep Dropdown</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
+                <ul>
+                  <li><a href="#">Deep Dropdown 1</a></li>
+                  <li><a href="#">Deep Dropdown 2</a></li>
+                  <li><a href="#">Deep Dropdown 3</a></li>
+                  <li><a href="#">Deep Dropdown 4</a></li>
+                  <li><a href="#">Deep Dropdown 5</a></li>
+                </ul>
+              </li>
+              <li><a href="#">Dropdown 2</a></li>
+              <li><a href="#">Dropdown 3</a></li> -->
+                <li><a href="">Logout</a></li>
+              </ul>
+            </li>
+
+
+            <!-- <li><a href="{% url 'profile' %}">Profile</a></li> -->
+          </ul>
+          <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
+        </nav>
+      </div>
+    </header>
+
+    <main class="main">
 
     
     {% block content %}
