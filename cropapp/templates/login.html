@@ -26,14 +26,14 @@
         <div class="form-inner">
           <form method="post" class="login">
             {% csrf_token %}
-            <!-- <div class="field">
-                    <input type="text" placeholder="Email Address" required>
+            <div class="field">
+                    <input type="text" placeholder="Email Address" required name="email">
                   </div>
                   <div class="field">
-                    <input type="password" placeholder="Password" required>
-                  </div> -->
+                    <input type="password" placeholder="Password" required name="password">
+                  </div> 
 
-            {{ form.as_p }} {% if messages %}
+            {% if messages %}
             <ul>
               {% for message in messages %}
               <li>{{ message }}</li>

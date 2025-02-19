@@ -25,7 +25,13 @@ urlpatterns = [
     path('payment/<int:id>/',views.payment_dtel,name='payment'),
     path('order_view/',views.farmer_order_view,name='order_view'),
     path('public_order_view/',views.my_order,name='public_order_view'),
-    path('order_cancel/<int:id>/',views.my_order_cancel,name='order_cancel')
+    path('order_cancel/<int:id>/',views.my_order_cancel,name='order_cancel'),
+    path('alert',views.alert_add,name='alert'),
+    path('ad_alert_view',views.admin_alert_view,name='ad_alert_view'),
+    path('alert_edit/<int:id>/',views.edit_alert,name='alert_edit'),
+    path('alert_del/<int:id>/',views.del_alert,name='alert_del'),
+    path('far_alert_view/',views.fa_alert_view,name='far_alert_view')
+
     
     
 ]+static(settings.MEDIA_URL,document_root = settings.MEDIA_ROOT)

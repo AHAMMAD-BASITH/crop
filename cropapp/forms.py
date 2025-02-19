@@ -1,5 +1,5 @@
 from django import forms
-from .models import login,user,public_user,products,payment
+from .models import login,user,public_user,products,payment,alert
 
 class Reg_Form(forms.ModelForm):
 
@@ -56,3 +56,12 @@ class payment_form(forms.ModelForm):
     class Meta:
         model=payment
         fields=['onwer_name','card_no','cvv','exp_month','exp_year']
+
+
+class AlertForm(forms.ModelForm):
+    class Meta:
+        model = alert
+        fields = ['message'] 
+        widgets = {
+            'message': forms.Textarea(attrs={'placeholder': 'Enter your alert message...', 'rows': 4}),
+        }

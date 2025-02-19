@@ -1,6 +1,6 @@
 from django.shortcuts import render,redirect,get_object_or_404
 from .models import login,user,public_user,products,cart
-from .forms import Reg_Form,login_form,login_verify,user_edit_form,login_edit_form,public_Form,products_form,payment_form
+from .forms import *
 from django.contrib import messages
 
 # Create your views here.
@@ -114,6 +114,7 @@ def profile_view(request):
         form=user_edit_form(instance=user_data)
         logform = login_edit_form(instance = user_login_data)
     return render(request,'edit.html',{'form':form,'logform':logform})
+
 
 def public_profile_view(request):
     # user = get_object_or_404(login,id=id)
@@ -245,3 +246,43 @@ def my_order_cancel(request,id):
     crt_id.cancelation_status=1
     crt_id.save()
     return redirect('public_order_view')
+
+
+def alert_add(request):
+    if request.method == "POST":
+        form = AlertForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('ad_alert_view')  
+    else:
+        form = AlertForm()
+    return render(request, 'add_alert.html', {'form': form})
+
+
+def far_alert_view(request):
+    return render(request, 'add_alert.html')
+
+def admin_alert_view(request):
+    alerts = alert.objects.all()
+    return render(request, 'admin_alert_view.html',{'alerts':alerts})
+
+
+def edit_alert(request,id):
+    alerts = get_object_or_404(alert,id=id)
+    if request.method == 'POST':
+        form = AlertForm(request.POST,instance=alerts)
+        if form.is_valid():
+            form.save()
+        return redirect('ad_alert_view')
+    else:
+        form = AlertForm(instance=alerts)
+    return render(request,'edit_alert.html',{'forms':form})
+
+def del_alert(request,id):
+    alerts=get_object_or_404(alert,id=id)
+    alerts.delete()
+    return redirect('ad_alert_view')
+
+def fa_alert_view(request):
+    alerts = alert.objects.all().order_by('-created_at')
+    return render(request, 'farmer_alert_view.html', {'alerts': alerts})
