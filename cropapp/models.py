@@ -46,3 +46,11 @@ class payment(models.Model):
 class alert(models.Model):
     message = models.TextField()
     created_at = models.DateTimeField(auto_now=True)
+
+class gov_products(models.Model):
+    category = models.CharField(max_length=100)
+    name = models.CharField(max_length=50)
+    image = models.ImageField(upload_to='images')
+    price = models.CharField(max_length=10)
+    subsidy_price = models.CharField(max_length=10)
+    current_date = models.DateTimeField(auto_now=True)

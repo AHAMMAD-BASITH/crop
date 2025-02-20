@@ -8,6 +8,9 @@ from django.contrib import messages
 def farmer_home(request):
     return render( request ,'farmer_home.html')
 
+def gov_home(request):
+    return render( request ,'gov_home.html')
+
 def landing_page(request):
     return render( request ,'index.html')
 
@@ -73,6 +76,9 @@ def logins(request):
                     elif user.user_type=='farmer':
                         request.session['farmer_id']=user.id
                         return redirect('farmer')
+                    elif user.user_type=='gov':
+                        request.session['gov_id']=user.id
+                        return redirect('gov')
                 else:
                     messages.error(request, 'Invalid password')
             except login.DoesNotExist:
@@ -286,3 +292,53 @@ def del_alert(request,id):
 def fa_alert_view(request):
     alerts = alert.objects.all().order_by('-created_at')
     return render(request, 'farmer_alert_view.html', {'alerts': alerts})
+
+
+def gov_product_add(request):
+    if request.method=='POST':
+
+        product=gov_products_form(request.POST,request.FILES)
+        if product.is_valid():
+            product.save()
+            return redirect('gov_view_pro')
+    else:
+        product=gov_products_form()
+    return render(request,'gov_prod_add.html',{'product':product})
+
+def gov_product_view(request):
+    gov_product=gov_products.objects.all()
+    return render(request,'gov_product_view.html',{'gov_product':gov_product})
+
+def gov_pro_edit(request,id):
+    products=get_object_or_404(gov_products,id=id)
+    if request.method=='POST':
+        form=gov_products_form(request.POST,request.FILES,instance=products)
+        if form.is_valid():
+            form.save()
+        return redirect('gov_view_pro')
+    else:
+        form=gov_products_form(instance=products)
+    return render(request ,'gov_prod_edit.html',{'product' : form})
+
+def del_gov_pro(request,id):
+    gov_pro=get_object_or_404(gov_products,id=id)
+    gov_pro.delete()
+    return redirect('gov_view_pro')
+
+
+def far_subsidy_view(request):
+    all_product=gov_products.objects.all()
+    return render(request,'farmer_product_view.html',{'all_products' : all_product})
+
+def f_add_to_cart(request,id):
+    f_id=request.session.get('farmer_id')
+    user_login_data = get_object_or_404(login, id=f_id)
+    product=get_object_or_404(products, id=id)
+    if cart.objects.filter(product_id=product,user_id=user_login_data,cancelation_status=0).exists():
+        messages.success(request,'product already exists')
+    else:
+        cart_data = cart.objects.create(
+            product_id = product,
+            user_id = user_login_data
+        )
+    return redirect('public_pro_view')

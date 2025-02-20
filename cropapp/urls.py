@@ -5,6 +5,7 @@ from . import views
 
 urlpatterns = [
     path('farmer/', views.farmer_home, name='farmer'),
+    path('gov/', views.gov_home, name='gov'),
     path('', views.landing_page, name='index'),
     path('admins/', views.admin_page, name='admins'),
     path('login/', views.logins, name='login'),
@@ -19,7 +20,7 @@ urlpatterns = [
     path('public/', views.public_home, name='public'),
     path('public_pro_view/', views.public_pro_view, name='public_pro_view'),
     path('edit_pro/<int:id>/',views.product_edit,name='edit_pro'),
-    path('cart/<int:p_id>/',views.add_to_cart,name='cart'),
+    path('cart/<int:id>/',views.add_to_cart,name='cart'),
     path('cart_view',views.cart_view,name='cart_view'),
     path('cart_del/<int:id>/',views.cart_product_del,name='cart_del'),
     path('payment/<int:id>/',views.payment_dtel,name='payment'),
@@ -30,8 +31,11 @@ urlpatterns = [
     path('ad_alert_view',views.admin_alert_view,name='ad_alert_view'),
     path('alert_edit/<int:id>/',views.edit_alert,name='alert_edit'),
     path('alert_del/<int:id>/',views.del_alert,name='alert_del'),
-    path('far_alert_view/',views.fa_alert_view,name='far_alert_view')
-
-    
-    
+    path('far_alert_view/',views.fa_alert_view,name='far_alert_view'),
+    path('gov_add_pro/', views.gov_product_add, name='gov_add_pro'),
+    path('gov_view_pro/', views.gov_product_view, name='gov_view_pro'),
+    path('gov_edit_pro/<int:id>/', views.gov_pro_edit, name='gov_edit_pro'),
+    path('gov_pro_del/<int:id>/',views.del_gov_pro,name='gov_pro_del'),
+    path('subsidy_pro',views.far_subsidy_view,name='subsidy_pro'),
+    path('farmer_cart/<int:id>/',views.f_add_to_cart,name='farmer_cart')
 ]+static(settings.MEDIA_URL,document_root = settings.MEDIA_ROOT)

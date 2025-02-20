@@ -1,5 +1,5 @@
 from django import forms
-from .models import login,user,public_user,products,payment,alert
+from .models import *
 
 class Reg_Form(forms.ModelForm):
 
@@ -65,3 +65,8 @@ class AlertForm(forms.ModelForm):
         widgets = {
             'message': forms.Textarea(attrs={'placeholder': 'Enter your alert message...', 'rows': 4}),
         }
+
+class gov_products_form(forms.ModelForm):
+    class Meta:
+        model=gov_products
+        fields=['category','name','image','price','subsidy_price']
