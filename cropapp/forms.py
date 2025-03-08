@@ -57,6 +57,10 @@ class payment_form(forms.ModelForm):
         model=payment
         fields=['onwer_name','card_no','cvv','exp_month','exp_year']
 
+class farmer_payment_form(forms.ModelForm):
+    class Meta:
+        model=farmer_payment
+        fields=['onwer_name','card_no','cvv','exp_month','exp_year']
 
 class AlertForm(forms.ModelForm):
     class Meta:
@@ -70,3 +74,11 @@ class gov_products_form(forms.ModelForm):
     class Meta:
         model=gov_products
         fields=['category','name','image','price','subsidy_price']
+
+class NotificatioForm(forms.ModelForm):
+    class Meta:
+        model = notification
+        fields = ['message'] 
+        widgets = {
+            'message': forms.Textarea(attrs={'placeholder': 'Enter the notification...', 'rows': 4}),
+        }

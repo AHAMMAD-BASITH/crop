@@ -9,7 +9,7 @@ class login(models.Model):
 class user(models.Model):
     name=models.CharField(max_length=100)
     contact=models.CharField(max_length=15)
-    login_id=models.ForeignKey(login,on_delete=models.CASCADE,null=True,blank=True)
+    login_id=models.OneToOneField(login,on_delete=models.CASCADE,null=True,blank=True,related_name='far')
 
 class public_user(models.Model):
     name=models.CharField(max_length=100)
@@ -54,3 +54,25 @@ class gov_products(models.Model):
     price = models.CharField(max_length=10)
     subsidy_price = models.CharField(max_length=10)
     current_date = models.DateTimeField(auto_now=True)
+
+class farmer_cart(models.Model):
+    product_id = models.ForeignKey(gov_products,on_delete=models.CASCADE,null=True,blank=True)
+    user_id = models.ForeignKey(login,on_delete=models.CASCADE,null=True,blank=True,related_name='farmer')
+    payment_status = models.IntegerField(default=0)
+    cancelation_status = models.IntegerField(default=0)
+    current_date = models.DateTimeField(auto_now_add=True)
+
+class farmer_payment(models.Model):
+    onwer_name = models.CharField(max_length=25)
+    card_no = models.CharField(max_length=15)
+    cvv = models.CharField(max_length=5)
+    exp_month = models.IntegerField()
+    exp_year = models.IntegerField()
+    amount = models.IntegerField(default=0)
+    cart_id = models.ForeignKey(farmer_cart,on_delete=models.CASCADE,null=True,blank=True)
+    login_id = models.ForeignKey(login,on_delete=models.CASCADE,null=True,blank=True)
+    current_date = models.DateTimeField(auto_now_add=True)
+
+class notification(models.Model):
+    message = models.TextField()
+    created_at = models.DateTimeField(auto_now=True)

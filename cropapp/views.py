@@ -1,5 +1,5 @@
 from django.shortcuts import render,redirect,get_object_or_404
-from .models import login,user,public_user,products,cart
+from .models import *
 from .forms import *
 from django.contrib import messages
 
@@ -264,10 +264,6 @@ def alert_add(request):
         form = AlertForm()
     return render(request, 'add_alert.html', {'form': form})
 
-
-def far_alert_view(request):
-    return render(request, 'add_alert.html')
-
 def admin_alert_view(request):
     alerts = alert.objects.all()
     return render(request, 'admin_alert_view.html',{'alerts':alerts})
@@ -332,13 +328,105 @@ def far_subsidy_view(request):
 
 def f_add_to_cart(request,id):
     f_id=request.session.get('farmer_id')
-    user_login_data = get_object_or_404(login, id=f_id)
-    product=get_object_or_404(products, id=id)
-    if cart.objects.filter(product_id=product,user_id=user_login_data,cancelation_status=0).exists():
+    farmer_login_data = get_object_or_404(login, id=f_id)
+    product=get_object_or_404(gov_products, id=id)
+    if farmer_cart.objects.filter(product_id=product,user_id=farmer_login_data,cancelation_status=0).exists():
         messages.success(request,'product already exists')
     else:
-        cart_data = cart.objects.create(
+        cart_data = farmer_cart.objects.create(
             product_id = product,
-            user_id = user_login_data
+            user_id =farmer_login_data
         )
-    return redirect('public_pro_view')
+    return redirect('frmr_pro_view')
+
+def far_cart_view(request):
+    far_id=request.session.get('farmer_id')
+    user_login_data = get_object_or_404(login,id=far_id)
+    cart_product=farmer_cart.objects.filter(user_id=user_login_data,payment_status=0)
+    return render(request,'frmr_pro_view.html',{'cart_products' : cart_product})
+
+
+def cart_product_del(request,id):
+    cart_product=get_object_or_404(farmer_cart,id=id)
+    cart_product.delete()
+    return redirect('cart_view')
+
+def far_payment_dtel(request,id):
+    far_id=request.session.get('farmer_id')
+    farmer_login_data = get_object_or_404(login,id=far_id)
+    crt_id = get_object_or_404(farmer_cart,id=id)
+    if request.method=='POST':
+
+        payment=farmer_payment_form(request.POST)
+        if payment.is_valid():
+
+            payment_data=payment.save(commit=False)
+            payment_data.login_id=farmer_login_data
+            payment_data.cart_id=crt_id
+            payment_data.save()
+            # c=cart.objects.get(id=crt_id)
+            c= get_object_or_404(farmer_cart,id=id)
+            c.payment_status=1
+            c.save()
+            return redirect('frmr_pro_view')
+    else:
+        payment=farmer_payment_form()
+
+    return render( request ,'farmer_payment.html',{'payment':payment})
+
+def far_order(request):
+    far=request.session.get('farmer_id')
+    far_id = get_object_or_404(login,id=far)
+    myord = farmer_cart.objects.filter(user_id=far_id,payment_status=1)
+    return render(request,'far_my_orders.html',{'myords':myord})
+
+def far_order_cancel(request,id):
+    far=request.session.get('farmer_id')
+    far_id = get_object_or_404(login,id=far)
+    crt_id = get_object_or_404(farmer_cart,id=id)
+    crt_id.cancelation_status=1
+    crt_id.save()
+    return redirect('farmer_order_view')
+
+
+def gov_orders(request):
+    prt = farmer_cart.objects.filter( payment_status=1).select_related('user_id__us')
+    return render(request, 'gov_orders_views.html', {'prts': prt})
+
+
+# jhggfdf
+
+def notification_add(request):
+    if request.method == "POST":
+        form = NotificatioForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('gov_notify_view')  
+    else:
+        form = NotificatioForm()
+    return render(request, 'add_notification.html', {'form': form})
+
+def gov_notification_view(request):
+    alerts = notification.objects.all()
+    return render(request, 'gov_notification_view.html',{'alerts':alerts})
+
+
+def edit_notification(request,id):
+    alerts = get_object_or_404(notification,id=id)
+    if request.method == 'POST':
+        form = NotificatioForm(request.POST,instance=alerts)
+        if form.is_valid():
+            form.save()
+        return redirect('gov_notify_view')
+    else:
+        form = NotificatioForm(instance=alerts)
+    return render(request,'notification_edit.html',{'forms':form})
+
+def del_notification(request,id):
+    alerts=get_object_or_404(notification,id=id)
+    alerts.delete()
+    return redirect('gov_notify_view')
+
+def fa_notification_view(request):
+    alerts = notification.objects.all().order_by('-created_at')
+    return render(request, 'farmer_notification_view.html', {'alerts': alerts})
