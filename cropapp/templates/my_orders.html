@@ -1,3 +1,5 @@
+{% extends 'public_header.html' %}
+{% block content %}
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
@@ -19,20 +21,11 @@
       rel="stylesheet"
     />
     <!-- Custom Stylesheet -->
-    <link href="{% static 'admin/theme/css/style.css' %}" rel="stylesheet" />
+    <!-- <link href="{% static 'admin/theme/css/style.css' %}" rel="stylesheet" /> -->
   </head>
 
   <body>
-    <!--*******************
-        Preloader start
-    ********************-->
-    <div id="preloader">
-      <div class="sk-three-bounce">
-        <div class="sk-child sk-bounce1"></div>
-        <div class="sk-child sk-bounce2"></div>
-        <div class="sk-child sk-bounce3"></div>
-      </div>
-    </div>
+  
     <div id="main-wrapper">
       <div class="content-body">
         <div class="container-fluid">
@@ -56,6 +49,7 @@
                           <th>product name</th>
                           <th>price</th>
                           <th>Image</th>
+                          <th></th>
                         </tr>
                       </thead>
                       <tbody>
@@ -116,3 +110,4 @@
     <script src="{% static 'admin/theme/js/plugins-init/datatables.init.js' %}"></script>
   </body>
 </html>
+{% endblock %}
