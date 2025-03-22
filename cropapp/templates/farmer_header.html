@@ -62,7 +62,7 @@
       <div
         class="container-fluid container-xl position-relative d-flex align-items-center justify-content-between"
       >
-        <a href="#" class="logo d-flex align-items-center">
+        <a href="{% url 'farmer' %}" class="logo d-flex align-items-center">
           <!-- Uncomment the line below if you also wish to use an image logo -->
           <!-- <img src="{% static 'user/assets/img/logo.png' %}" alt="AgriCulture"> -->
           <h1 class="sitename">FARMER</h1>
@@ -73,6 +73,7 @@
             <li><a href="{% url 'farmer' %}" class="active">Home</a></li>
             <li><a href="{% url 'subsidy_pro' %}">Subsidy Product</a></li>
             <li><a href="{% url 'frmr_pro_view' %}">Cart</a></li>
+            <li><a href="{% url 'farmer_order_view' %}">My Orders</a></li>
             <li><a href="{% url 'fa_notification_view' %}">Notification</a></li>
             <li><a href="{% url 'far_alert_view' %}">Alerts</a></li>
             <li><a href="{% url 'order_view' %}">Orders</a></li>

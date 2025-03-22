@@ -27,11 +27,21 @@
           <form method="post" class="login">
             {% csrf_token %}
             <div class="field">
-                    <input type="text" placeholder="Email Address" required name="email">
-                  </div>
-                  <div class="field">
-                    <input type="password" placeholder="Password" required name="password">
-                  </div> 
+              <input
+                type="text"
+                placeholder="Email Address"
+                required
+                name="email"
+              />
+            </div>
+            <div class="field">
+              <input
+                type="password"
+                placeholder="Password"
+                required
+                name="password"
+              />
+            </div>
 
             {% if messages %}
             <ul>
@@ -45,24 +55,10 @@
               <div class="btn-layer"></div>
               <input type="submit" value="Login" />
             </div>
-            <div class="signup-link">
-              Not a member? <a href="{% url 'register' %}">Signup now</a>
-            </div>
-          </form>
-          <form action="#" class="signup">
-            <div class="field">
-              <input type="text" placeholder="Email Address" required />
-            </div>
-            <div class="field">
-              <input type="password" placeholder="Password" required />
-            </div>
-            <div class="field">
-              <input type="password" placeholder="Confirm password" required />
-            </div>
-            <div class="field btn">
-              <div class="btn-layer"></div>
-              <input type="submit" value="Signup" />
-            </div>
+            <center>
+              <a href="{% url 'index' %}" style="display: inline-block; padding: 10px 20px; margin-top: 10px; background-color: #007bff; color: white; text-decoration: none; border-radius: 5px; font-weight: bold;">Go Home</a>
+
+            </center>
           </form>
         </div>
       </div>

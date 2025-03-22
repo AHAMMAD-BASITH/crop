@@ -2,6 +2,27 @@
 {% block content %}
 {% load static %}
 
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Focus - Bootstrap Admin Dashboard</title>
+    <!-- Favicon icon -->
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="{% static 'admin/theme/images/favicon.png' %}"
+    />
+    <!-- Datatable -->
+    <link
+      href="{% static 'admin/theme/vendor/datatables/css/jquery.dataTables.min.css' %}"
+      rel="stylesheet"
+    />
+    <!-- Custom Stylesheet -->
+    <!-- <link href="{% static 'admin/theme/css/style.css' %}" rel="stylesheet" /> -->
+  </head>
 <body>
     <div id="main-wrapper">
       <div class="content-body">
@@ -12,7 +33,7 @@
             <div class="col-12">
               <div class="card">
                 <div class="card-header">
-                  <h4 class="card-title">farmer Datatable</h4>
+                  <h4 class="card-title">Orders</h4>
                 </div>
                 <div class="card-body">
                   <div class="table-responsive">

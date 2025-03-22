@@ -1,6 +1,3 @@
-{% extends 'gov_header.html' %}
-{% block content %}
-
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -13,6 +10,13 @@
         margin: 0;
         padding: 0;
         background-color: #f4f4f4;
+      }
+      .container {
+        width: 50%;
+        margin: 50px auto;
+        padding: 20px;
+        background-color: #fff;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
       }
       h2 {
         text-align: center;
@@ -57,10 +61,10 @@
   </head>
   <body>
     <div class="container">
-      <h2>Notification Form</h2>
+      <h2>Alert Form</h2>
       <form action="" method="POST">
         <div class="form-group">
-          <label for="complaint">Add Notification</label>
+          <label for="complaint">Your Alert</label>
           {% csrf_token %} 
           {{ form.as_p }}
         </div>
@@ -71,4 +75,3 @@
     </div>
   </body>
 </html>
-{% endblock %}

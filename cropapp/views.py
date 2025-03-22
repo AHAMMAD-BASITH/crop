@@ -138,7 +138,7 @@ def public_profile_view(request):
     else:
         form=user_edit_form(instance=user_data)
         logform = login_edit_form(instance = user_login_data)
-    return render(request,'edit.html',{'form':form,'logform':logform})
+    return render(request,'public_pro_edit.html',{'form':form,'logform':logform})
 
 
 def product_add(request):
@@ -393,8 +393,6 @@ def gov_orders(request):
     prt = farmer_cart.objects.filter( payment_status=1).select_related('user_id__us')
     return render(request, 'gov_orders_views.html', {'prts': prt})
 
-
-# jhggfdf
 
 def notification_add(request):
     if request.method == "POST":
