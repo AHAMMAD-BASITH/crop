@@ -23,6 +23,8 @@ def login_page(request):
 def public_home(request):
     return render( request ,'public.html')
 
+def deliver_home(request):
+    return render(request ,'deliver_home.html')
 
 
 def register(request):
@@ -61,6 +63,27 @@ def public_register(request):
     return render (request,'public_registration.html',{'detl':detl,'paswrd':paswrd})
 
 
+def deliver_register(request):
+    logid=request.session.get('farmer_id')
+    farid=get_object_or_404(login,id=logid)
+    if request.method== 'POST':
+        detl=deliver_Form(request.POST)
+        paswrd=login_form(request.POST)
+        if detl.is_valid() and paswrd.is_valid():
+            login_data=paswrd.save(commit=False)
+            login_data.user_type = 'delivery'
+            login_data.save() 
+            reg_data=detl.save(commit=False)
+            reg_data.login_id=login_data
+            reg_data.far_id=farid
+
+            reg_data.save()
+            return redirect ('farmer')
+    else:
+        detl=deliver_Form()
+        paswrd=login_form()
+    return render (request,'delivery_registration.html',{'detl':detl,'paswrd':paswrd})
+
 def logins(request):
     if request.method =='POST':
         form=login_verify(request.POST)
@@ -79,6 +102,9 @@ def logins(request):
                     elif user.user_type=='gov':
                         request.session['gov_id']=user.id
                         return redirect('gov')
+                    elif user.user_type=='delivery':
+                        request.session['deliver_id']=user.id
+                        return redirect('delivery')
                 else:
                     messages.error(request, 'Invalid password')
             except login.DoesNotExist:
@@ -86,6 +112,24 @@ def logins(request):
     else:
         form = login_verify()
     return render(request,'login.html',{'form':form})
+
+def delivery_profile_view(request):
+    user_id=request.session.get('deliver_id')
+
+    user_login_data=get_object_or_404(login,id=user_id)
+    user_data=get_object_or_404(delivery_boy,login_id=user_login_data.id)
+
+    if request.method == 'POST':
+        form=deliver_Form(request.POST,instance=user_data)
+        logform=login_edit_form(instance=user_login_data)
+        if form.is_valid() and logform.is_valid():
+            form.save()
+            logform.save()
+            return redirect('delivery')
+    else:
+        form=user_edit_form(instance=user_data)
+        logform = login_edit_form(instance = user_login_data)
+    return render(request,'deliver_pro.html',{'form':form,'logform':logform})
 
 def table_view(request):
     farmer=user.objects.all()
@@ -208,10 +252,10 @@ def cart_product_del(request,id):
     cart_product.delete()
     return redirect('cart_view')
 
-def payment_dtel(request,id):
+def payment_dtel(request,id,cartid):
     user_id=request.session.get('public_id')
     user_login_data = get_object_or_404(login,id=user_id)
-    crt_id = get_object_or_404(cart,id=id)
+    crt_id = get_object_or_404(cart,id=cartid)
     if request.method=='POST':
 
         payment=payment_form(request.POST)
@@ -428,3 +472,19 @@ def del_notification(request,id):
 def fa_notification_view(request):
     alerts = notification.objects.all().order_by('-created_at')
     return render(request, 'farmer_notification_view.html', {'alerts': alerts})
+
+def address_add(request,id):
+    user=request.session.get('public_id')
+    logid=get_object_or_404(login,id=user)
+    cart_id = get_object_or_404(cart,id = id )
+    if request.method =="POST":
+        form=address_form(request.POST)
+        print(form)
+        if form.is_valid():
+            a = form.save(commit=False)
+            a.login_id = logid
+            a.save()
+            return redirect('payment',a.id,cart_id.id)
+    else:
+        form=address_form()
+        return render(request, 'public_address.html',{'form':form})
