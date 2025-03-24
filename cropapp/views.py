@@ -54,7 +54,7 @@ def public_register(request):
             reg_data.login_id=login_data
 
             reg_data.save()
-            return redirect ('public')
+            return redirect ('login')
     else:
         detl=public_Form()
         paswrd=login_form()
