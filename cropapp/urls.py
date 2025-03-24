@@ -48,6 +48,11 @@ urlpatterns = [
     path('gov_notify_view/',views.gov_notification_view,name='gov_notify_view'),
     path('gov_notify_edit/<int:id>',views.edit_notification,name='gov_notify_edit'),
     path('gov_notify_del/<int:id>',views.del_notification,name='gov_notify_del'),
+    path('add_address/<int:id>',views.address_add,name='add_address'),
+    path('payment/<int:id>/<int:cartid>',views.payment_dtel,name='payment'),
+    path('delivery_register/',views.deliver_register,name='delivery_register'),
+    path('delivery/',views.deliver_home,name='delivery'),
+    path('deliver_profile_view/', views.delivery_profile_view, name='deliver_profile_view'),
     path('fa_notification_view/',views.fa_notification_view,name='fa_notification_view'),
 
 ]+static(settings.MEDIA_URL,document_root = settings.MEDIA_ROOT)

@@ -82,3 +82,14 @@ class NotificatioForm(forms.ModelForm):
         widgets = {
             'message': forms.Textarea(attrs={'placeholder': 'Enter the notification...', 'rows': 4}),
         }
+
+class address_form(forms.ModelForm):
+    class Meta:
+        model=address
+        fields=['name','contact','house_name','area','landmark','pincode','city','state']
+
+class deliver_Form(forms.ModelForm):
+
+    class Meta:
+        model = delivery_boy
+        fields = ['name', 'contact']

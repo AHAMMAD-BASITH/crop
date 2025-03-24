@@ -76,3 +76,20 @@ class farmer_payment(models.Model):
 class notification(models.Model):
     message = models.TextField()
     created_at = models.DateTimeField(auto_now=True)
+
+class address(models.Model):
+    name=models.CharField(max_length=100)
+    contact=models.CharField(max_length=15)
+    house_name=models.CharField(max_length=100)
+    area=models.CharField(max_length=100)
+    landmark=models.CharField(max_length=100)
+    pincode=models.CharField(max_length=10)
+    city=models.CharField(max_length=100)
+    state=models.CharField(max_length=100)
+    login_id=models.ForeignKey(login,on_delete=models.CASCADE,null=True,blank=True,related_name='public')
+
+class delivery_boy(models.Model):
+    name=models.CharField(max_length=100)
+    contact=models.CharField(max_length=15)
+    far_id=models.ForeignKey(login,on_delete=models.CASCADE,related_name='farmer_as_table',null=True,blank=True)
+    login_id=models.ForeignKey(login,on_delete=models.CASCADE,related_name='login_as_table',null=True,blank=True)

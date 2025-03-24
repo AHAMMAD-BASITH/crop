@@ -70,7 +70,7 @@
         <a href="{% url 'farmer' %}" class="logo d-flex align-items-center">
           <!-- Uncomment the line below if you also wish to use an image logo -->
           <!-- <img src="{% static 'user/assets/img/logo.png' %}" alt="AgriCulture"> -->
-          <h1 class="sitename">FARMER</h1>
+          <h1 class="sitename">DELIVERY</h1>
         </a>
 
         <nav id="navmenu" class="navmenu">
@@ -81,7 +81,7 @@
             <li><a href="{% url 'fa_notification_view' %}">Notification</a></li>
             <li><a href="{% url 'far_alert_view' %}">Alerts</a></li>
             <li><a href="{% url 'order_view' %}">Orders</a></li>
-            <li><a href="{% url 'delivery_register' %}">Delivery</a></li>
+            <!-- <li><a href="{% url 'delivery_register' %}">Delivery</a></li> -->
 
             <li class="dropdown">
               <a href="#"
@@ -112,7 +112,7 @@
                 <i class="bi bi-chevron-down toggle-dropdown"></i
               ></a>
               <ul>
-                <li><a href="{% url 'profile' %}">Edit</a></li>
+                <li><a href="{% url 'deliver_profile_view' %}">Edit</a></li>
                 <!-- <li class="dropdown"><a href="#"><span>Deep Dropdown</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
                 <ul>
                   <li><a href="#">Deep Dropdown 1</a></li>
