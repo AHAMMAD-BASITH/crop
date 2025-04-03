@@ -29,6 +29,7 @@ class cart(models.Model):
     user_id = models.ForeignKey(login,on_delete=models.CASCADE,null=True,blank=True,related_name='users')
     payment_status = models.IntegerField(default=0)
     cancelation_status = models.IntegerField(default=0)
+    delivery_status = models.IntegerField(default=0)
     current_date = models.DateTimeField(auto_now_add=True)
 
 class payment(models.Model):
@@ -93,3 +94,8 @@ class delivery_boy(models.Model):
     contact=models.CharField(max_length=15)
     far_id=models.ForeignKey(login,on_delete=models.CASCADE,related_name='farmer_as_table',null=True,blank=True)
     login_id=models.ForeignKey(login,on_delete=models.CASCADE,related_name='login_as_table',null=True,blank=True)
+
+class delivery_assign(models.Model):
+    created_at = models.DateTimeField(auto_now=True)
+    cart_id = models.ForeignKey(cart,on_delete=models.CASCADE,null=True,blank=True)
+    delivery_team_id = models.ForeignKey(delivery_boy,on_delete=models.CASCADE,null=True,blank=True)

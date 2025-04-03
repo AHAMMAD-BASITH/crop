@@ -1,6 +1,8 @@
-{% extends 'public_header.html' %}
+{% extends 'farmer_header.html' %}
 {% block content %}
 {% load static %}
+
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -23,9 +25,7 @@
     <!-- Custom Stylesheet -->
     <!-- <link href="{% static 'admin/theme/css/style.css' %}" rel="stylesheet" /> -->
   </head>
-
-  <body>
-  
+<body>
     <div id="main-wrapper">
       <div class="content-body">
         <div class="container-fluid">
@@ -35,7 +35,7 @@
             <div class="col-12">
               <div class="card">
                 <div class="card-header">
-                  <h4 class="card-title">My Orders</h4>
+                  <h4 class="card-title">Available Products to delivery</h4>
                 </div>
                 <div class="card-body">
                   <div class="table-responsive">
@@ -47,39 +47,27 @@
                       <thead>
                         <tr>
                           <th>product name</th>
+                          <th>Buyer Name</th>
                           <th>price</th>
                           <th>Image</th>
-                          <th></th>
+                          <th>Assign</th>
                         </tr>
                       </thead>
                       <tbody>
-                        {% for myord in myords %}
+                        {% for prt in prts %}
+                        {% if prt.cancelation_status == 0  %}
                         <tr>
-                          <td>{{ myord.product_id.name }}</td>
-                          <td>{{ myord.product_id.price }}</td>
+                          
+                          <td>{{ prt.product_id.name }}</td>
+                          <td>{{ prt.user_id.us.name }}</td> 
+                          <td>{{ prt.product_id.price }}</td>
                           <td>
-                            <img
-                              src="/media/{{ myord.product_id.image }}"
-                              width="90px"
-                              alt=""
-                            />
+                            <img src="/media/{{ prt.product_id.image }}" width="90px" alt="" />
                           </td>
                           <td>
-                            {% if myord.cancelation_status == 1 %}
-                            <button class="btn btn-secondary m-3" disabled>
-                              Cancelled
-                            </button>
-                            <a
-                              class="btn-close m-3"
-                              href="{% url 'cancel_del' myord.id %}"
-                              ></a
-                            >
+                            
+                            <a href="{% url 'assignig' delivery_id prt.id %}" class="btn btn-success m-3">Assign</a>
                             {% else %}
-                            <a
-                              class="btn btn-danger m-3"
-                              href="{% url 'order_cancel' myord.id %}"
-                              >Cancel</a
-                            >
                             
                             {% endif %}
                           </td>
@@ -87,9 +75,6 @@
                         {% endfor %}
                       </tbody>
                     </table>
-                    <a class="btn btn-primary m-3" href="{% url 'cart_view' %}"
-                      >Cart</a
-                    >
                   </div>
                 </div>
               </div>

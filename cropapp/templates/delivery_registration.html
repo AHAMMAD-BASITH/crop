@@ -1,11 +1,11 @@
-{% extends 'index_header.html' %}
+{% extends 'farmer_header.html' %}
 {% block content %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Create User</title>
+    <title>Create Delivery team</title>
     <style>
      
         .containar {
@@ -15,7 +15,7 @@
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             width: 300px;
             text-align: center;
-            margin: 80px;
+            margin: 30px;
         }
         h2 {
             margin-bottom: 20px;
@@ -52,7 +52,7 @@
 <body>
     <center>
         <div class="containar">
-        <h2>Create User</h2>
+        <h2>Create Delivery team</h2>
         <form method="post">
           {% csrf_token %} 
             <label for="name">Name:</label>

@@ -1,8 +1,6 @@
-{% extends 'public_header.html' %}
+{% extends 'farmer_header.html' %}
 {% block content %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="en">
   <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -25,17 +23,27 @@
   </head>
 
   <body>
-  
+    <!--*******************
+        Preloader start
+    ********************-->
+
     <div id="main-wrapper">
       <div class="content-body">
         <div class="container-fluid">
+          {% if messages %}
+          <ul>
+            {% for message in messages %}
+            <li class="text-danger font-weight-bold">{{ message }}</li>
+            {% endfor %}
+          </ul>
+          {% endif %}
           <!-- row -->
 
           <div class="row">
             <div class="col-12">
               <div class="card">
                 <div class="card-header">
-                  <h4 class="card-title">My Orders</h4>
+                  <h4 class="card-title">Delivery Team</h4>
                 </div>
                 <div class="card-body">
                   <div class="table-responsive">
@@ -46,50 +54,31 @@
                     >
                       <thead>
                         <tr>
-                          <th>product name</th>
-                          <th>price</th>
-                          <th>Image</th>
+                          <th>Name</th>
+                          <th>Contact</th>
                           <th></th>
                         </tr>
                       </thead>
                       <tbody>
-                        {% for myord in myords %}
+                        {% for deliverys in delivery %}
                         <tr>
-                          <td>{{ myord.product_id.name }}</td>
-                          <td>{{ myord.product_id.price }}</td>
-                          <td>
-                            <img
-                              src="/media/{{ myord.product_id.image }}"
-                              width="90px"
-                              alt=""
-                            />
+                          
+                          <td>{{deliverys.name}}</td>
+                          <td>{{deliverys.contact}}</td>
                           </td>
                           <td>
-                            {% if myord.cancelation_status == 1 %}
-                            <button class="btn btn-secondary m-3" disabled>
-                              Cancelled
-                            </button>
                             <a
-                              class="btn-close m-3"
-                              href="{% url 'cancel_del' myord.id %}"
-                              ></a
+                              href="{% url 'avilable_orders' deliverys.id %}"
+                              class="btn btn-primary"
                             >
-                            {% else %}
-                            <a
-                              class="btn btn-danger m-3"
-                              href="{% url 'order_cancel' myord.id %}"
-                              >Cancel</a
-                            >
-                            
-                            {% endif %}
+                              Assign
+                            </a>
                           </td>
                         </tr>
                         {% endfor %}
                       </tbody>
                     </table>
-                    <a class="btn btn-primary m-3" href="{% url 'cart_view' %}"
-                      >Cart</a
-                    >
+                    <!-- <a class="btn btn-primary m-3" href="{% url 'cart_view' %}">Go To Cart</a> -->
                   </div>
                 </div>
               </div>

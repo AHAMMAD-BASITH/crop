@@ -26,6 +26,10 @@ def public_home(request):
 def deliver_home(request):
     return render(request ,'deliver_home.html')
 
+def logout_view(request):
+    request.session.flush()  # Clears all session data
+    return redirect('login')  # Redirect to login page
+
 
 def register(request):
     if request.method == 'POST':
@@ -266,9 +270,9 @@ def payment_dtel(request,id,cartid):
             payment_data.cart_id=crt_id
             payment_data.save()
             # c=cart.objects.get(id=crt_id)
-            c= get_object_or_404(cart,id=id)
-            c.payment_status=1
-            c.save()
+            # c= get_object_or_404(cart,id=cartid)
+            crt_id.payment_status=1
+            crt_id.save()
             return redirect('cart_view')
     else:
         payment=payment_form()
@@ -488,3 +492,44 @@ def address_add(request,id):
     else:
         form=address_form()
         return render(request, 'public_address.html',{'form':form})
+    
+
+
+def all_delivery_boys(request):
+    user=request.session.get('farmer_id')
+    # logid=get_object_or_404(login,id=user)
+    # delivery = get_object_or_404(delivery_boy,far_id = logid )
+    delivery = delivery_boy.objects.filter(far_id=user)
+    return render(request, 'farmer_delivery_view.html',{'delivery':delivery})
+
+def del_cancelled(request,id):
+    crt=get_object_or_404(cart,id=id)
+    crt.delete()
+    return redirect('public_order_view')
+
+def ord_avil(request, id):
+    farmer = request.session.get('farmer_id')
+    farmer_id = get_object_or_404(login, id=farmer)
+    prt = cart.objects.filter(product_id__login_id=farmer_id, payment_status=1 ,delivery_status = 0).select_related('user_id__us')
+    return render(request, 'avilable_pro.html', {'prts': prt, 'delivery_id': id})
+
+
+def assigning_delivery(request, id, cartid):
+    cart_instance = get_object_or_404(cart, id=cartid)
+    delivery_team = get_object_or_404(delivery_boy, id=id)
+
+    delivery_assign.objects.create(
+        cart_id=cart_instance,
+        delivery_team_id=delivery_team
+    )
+    cart_instance.delivery_status = 1
+    cart_instance.save()
+    return redirect('order_view')
+
+def del_reqs(request):
+    deliv = request.session.get('deliver_id')
+    deliv_id = get_object_or_404(delivery_boy, login_id=deliv)
+    delivery_req = delivery_assign.objects.get(delivery_team_id=deliv_id)
+    prt = cart.objects.get(id=delivery_req.cart_id)
+
+    return render(request, 'delivery_req.html',{'prts': prt})
