@@ -60,4 +60,5 @@ urlpatterns = [
     path('avilable_orders/<int:id>',views.ord_avil,name='avilable_orders'),
     path('assignig/<int:id>/<int:cartid>',views.assigning_delivery,name='assignig'),
     path('delivery_request',views.del_reqs,name='delivery_request'),
+    path('completed/<int:id>',views.delevery_complete,name='completed'),
 ]+static(settings.MEDIA_URL,document_root = settings.MEDIA_ROOT)

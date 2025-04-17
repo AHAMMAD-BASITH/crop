@@ -95,7 +95,9 @@ class delivery_boy(models.Model):
     far_id=models.ForeignKey(login,on_delete=models.CASCADE,related_name='farmer_as_table',null=True,blank=True)
     login_id=models.ForeignKey(login,on_delete=models.CASCADE,related_name='login_as_table',null=True,blank=True)
 
+
 class delivery_assign(models.Model):
     created_at = models.DateTimeField(auto_now=True)
     cart_id = models.ForeignKey(cart,on_delete=models.CASCADE,null=True,blank=True)
     delivery_team_id = models.ForeignKey(delivery_boy,on_delete=models.CASCADE,null=True,blank=True)
+    status = models.IntegerField(default=0)

@@ -518,18 +518,44 @@ def assigning_delivery(request, id, cartid):
     cart_instance = get_object_or_404(cart, id=cartid)
     delivery_team = get_object_or_404(delivery_boy, id=id)
 
-    delivery_assign.objects.create(
-        cart_id=cart_instance,
-        delivery_team_id=delivery_team
-    )
-    cart_instance.delivery_status = 1
-    cart_instance.save()
-    return redirect('order_view')
+    if delivery_assign.objects.filter(delivery_team_id=delivery_team,status=0).exists:
+        delivery_assign.objects.create(
+            cart_id=cart_instance,
+            delivery_team_id=delivery_team,
+            status=1
+        )
+        cart_instance.delivery_status = 1
+        cart_instance.save()
+    else:
+        messages.error(request, 'The Delivery Boy is Busy')
+    return redirect('fa_delivery_view')
 
+# def del_reqs(request):
+#     deliv = request.session.get('deliver_id')
+#     deliv_id = get_object_or_404(delivery_boy, login_id=deliv)
+#     delivery_req = delivery_assign.objects.filter(delivery_team_id=deliv_id)
+
+#     print(delivery_req)
+#     # prt = cart.objects.get(id=delivery_req.cart_id)
+#     return render(request, 'delivery_req.html',{'prts': delivery_req})
 def del_reqs(request):
     deliv = request.session.get('deliver_id')
     deliv_id = get_object_or_404(delivery_boy, login_id=deliv)
-    delivery_req = delivery_assign.objects.get(delivery_team_id=deliv_id)
-    prt = cart.objects.get(id=delivery_req.cart_id)
+    delivery_req = delivery_assign.objects.filter(delivery_team_id=deliv_id)
+    # Attach address object to each delivery request
+    for req in delivery_req:
+        user = req.cart_id.user_id  # user related to the cart
+        req.address = address.objects.filter(login_id=user).first()  # Get address for that user
+    return render(request, 'delivery_req.html', {'prts': delivery_req})
 
-    return render(request, 'delivery_req.html',{'prts': prt})
+def delevery_complete(request,id):
+    # dele_boy = request.session.get('deliver_id')
+    # print(dele_boy)
+    deliv_id = get_object_or_404(delivery_assign, id=id)
+    ad = deliv_id.cart_id.id
+    deliv_id.status=0
+    deliv_id.save()
+    del_cart = get_object_or_404(cart,id=ad)
+    del_cart.delivery_status=2
+    del_cart.save()
+    return redirect('delivery_request')

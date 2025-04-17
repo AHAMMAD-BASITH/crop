@@ -1,4 +1,4 @@
-{% extends 'farmer_header.html' %}
+{% extends 'delivery_header.html' %}
 {% block content %}
 {% load static %}
 
@@ -46,29 +46,27 @@
                     >
                       <thead>
                         <tr>
-                          <th>product name</th>
                           <th>Buyer Name</th>
-                          <th>price</th>
-                          <th>Image</th>
-                          <th>Assign</th>
+                          <th>Phone no</th>
+                          <th>City</th>
+                          <th>Address</th>
+                          <th>Status</th>
                         </tr>
                       </thead>
                       <tbody>
                         {% for prt in prts %}
-                        {% if prt.cancelation_status == 0  %}
+                        
                         <tr>
                           
-                          <td>{{ prt.product_id.name }}</td>
-                          <td>{{ prt.user_id.us.name }}</td> 
-                          <td>{{ prt.product_id.price }}</td>
+                          <td>{{ prt.address.name }}</td>
+                          <td>{{ prt.address.contact }}</td> 
+                          <td>{{ prt.address.city }}</td>
+                          <td> {{ prt.address.house_name }}, {{ prt.address.area }},{{ prt.address.pincode }}</td>
                           <td>
-                            <img src="/media/{{ prt.product_id.image }}" width="90px" alt="" />
-                          </td>
-                          <td>
-                            
-                            <a href="{% url 'assignig' delivery_id prt.id %}" class="btn btn-success m-3">Assign</a>
+                            {% if prt.status == 1 %}
+                            <a href="{% url 'completed' prt.id %}" class="btn btn-success m-3">Completed</a>
                             {% else %}
-                            
+                            <a href="" class="btn btn-warning m-3 disabled">Finished</a>
                             {% endif %}
                           </td>
                         </tr>

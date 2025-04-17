@@ -78,7 +78,9 @@
                         {% endfor %}
                       </tbody>
                     </table>
-                    <!-- <a class="btn btn-primary m-3" href="{% url 'cart_view' %}">Go To Cart</a> -->
+              {% if messages %}
+              {{ message }}
+              {% endif %}
                   </div>
                 </div>
               </div>
