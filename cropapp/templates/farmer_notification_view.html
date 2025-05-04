@@ -1,0 +1,43 @@
+{% extends 'farmer_header.html' %}
+{% block content %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Alerts</title>
+    <style>
+        body{
+            overflow-x: hidden;
+        }
+        .container{
+            margin-bottom: 30px;
+        }
+        h2 {
+            text-align: center;
+        }
+        .alert {
+            padding: 15px;
+            margin-bottom: 10px;
+            border-left: 5px solid #28a745;
+            background: #e9f7ef;
+        }
+        .alert-date {
+            font-size: 0.9em;
+            color: #555;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Notification</h2>
+        {% for alert in alerts %}
+        <div class="alert">
+            <p>{{ alert.message }}</p>
+            <p class="alert-date">Date: {{ alert.created_at }}</p>
+        </div>
+        {% empty %}
+        <p>No alerts available.</p>
+        {% endfor %}
+    </div>
+</body>
+</html>
+{% endblock %}

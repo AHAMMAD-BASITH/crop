@@ -1,0 +1,86 @@
+{% extends 'admin_header.html' %}
+{% block content %}
+{% load static %}
+
+<div class="container-fluid">
+    <div class="row page-titles mx-0">
+        <div class="col-sm-6 p-md-0">
+            <div class="welcome-text">
+                <h4>Hi, welcome back!</h4>
+                <span class="ml-1">Datatable</span>
+            </div>
+        </div>
+        <div class="col-sm-6 p-md-0 justify-content-sm-end mt-2 mt-sm-0 d-flex">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="javascript:void(0)">Table</a></li>
+                <li class="breadcrumb-item active"><a href="javascript:void(0)">Datatable</a></li>
+            </ol>
+        </div>
+    </div>
+    <!-- row -->
+
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="card-title">farmer Datatable</h4>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table id="example" class="display" style="min-width: 845px">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Contact</th>
+                                    <th>Email</th>
+                                    <th></th>
+                                    <th>Action</th>
+                                    
+                                    
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for farmer in farmers %}
+                                <tr>
+                                  
+                                  <td>{{farmer.name}}</td>
+                                  <td>{{farmer.contact}}</td>
+                                  <td>{{farmer.login_id.email}}</td>
+                                  <td>
+                                    {% if farmer.login_id.gov_status == 1 %}
+                                    <p style="color: red;">Repported by GOVERNMENT</p>
+                                    {% else %}
+                                    {% endif %}
+                                  </td>
+                                  <td>
+                                    {% if farmer.login_id.verification_status == 0 %}
+
+                                    <a href="{% url 'far_approve' farmer.id %}" class="btn btn-success">Approve</a>
+                                    <a href="{% url 'far_reject' farmer.id %}" class="btn btn-danger">Reject</a>
+
+                                    {% elif farmer.login_id.verification_status == 1 %}
+
+                                    <a href="{% url 'far_freez' farmer.id %}" class="btn btn-primary">Freeze </a>
+
+                                    {% elif farmer.login_id.verification_status == 2 %}
+
+                                    <a href="{% url 'far_reject' farmer.id %}" class="btn btn-danger" disabled>Rejected</a>
+
+                                    {% else %}
+                                    <a href="{% url 'far_approve' farmer.id %}" class="btn btn-success">Unfreeze </a>
+
+                                    {% endif %}
+                                  </td>
+                                
+                                </tr>
+                                {% endfor %}
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

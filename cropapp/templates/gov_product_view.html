@@ -1,0 +1,116 @@
+{% extends 'gov_header.html' %}
+{% block content %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Focus - Bootstrap Admin Dashboard</title>
+    <!-- Favicon icon -->
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="{% static 'admin/theme/images/favicon.png' %}"
+    />
+    <!-- Datatable -->
+    <link
+      href="{% static 'admin/theme/vendor/datatables/css/jquery.dataTables.min.css' %}"
+      rel="stylesheet"
+    />
+    <!-- Custom Stylesheet -->
+    <!-- <link href="{% static 'admin/theme/css/style.css' %}" rel="stylesheet" /> -->
+  </head>
+
+  <body>
+    <!--*******************
+        Preloader start
+    ********************-->
+    
+    <div id="main-wrapper">
+      <div class="content-body">
+        <div class="container-fluid">
+          <!-- row -->
+
+          <div class="row">
+            <div class="col-12">
+              <div class="card">
+                <div class="card-header">
+                  <h4 class="card-title">All Products</h4>
+                </div>
+                <div class="card-body">
+                  <div class="table-responsive">
+                    <table
+                      id="example"
+                      class="display"
+                      style="min-width: 845px"
+                    >
+                      <thead>
+                        <tr>
+                          <th>Image</th>
+                          <th>Category</th>
+                          <th>Name</th>
+                          <th>price</th>
+                          <th>subsidy price</th>
+                          <th>edit/del</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {% for gov_product in gov_product %}
+                        <tr>
+                          <td>
+                            <img
+                              src="/media/{{gov_product.image}}"
+                              width="90px"
+                              alt=""
+                            />
+                          </td>
+                          <td>{{gov_product.category}}</td>
+                          <td>{{gov_product.name}}</td>
+                          <td>{{gov_product.price}}</td>
+                          <td>{{gov_product.subsidy_price}}</td>
+                          <td>
+                            <a class="btn btn-primary" href="{% url 'gov_edit_pro' gov_product.id %}">Edit</a>
+                            <a class="btn btn-danger" href="{% url 'gov_pro_del' gov_product.id %}">Delete</a>
+                          </td>
+                        </tr>
+                        {% endfor %}
+                        
+                      </tbody>
+                      
+                    </table>
+                    <!-- <a class="btn btn-primary m-3" href="{% url 'order_view' %}">Go To Orders</a> -->
+                  </div>
+                  
+                  
+                </div>
+                
+              </div>
+              
+            </div>
+            
+          </div>
+        </div>
+      </div>
+      <div class="footer">
+        <div class="copyright">
+          <p>
+            Copyright © Designed &amp; Developed by
+            <a href="#" target="_blank">Quixkit</a> 2019
+          </p>
+        </div>
+      </div>
+    </div>
+    <!-- Required vendors -->
+    <script src="{% static 'admin/theme/vendor/global/global.min.js' %}"></script>
+    <script src="{% static 'admin/theme/js/quixnav-init.js' %}"></script>
+    <script src="{% static 'admin/theme/js/custom.min.js' %}"></script>
+
+    <!-- Datatable -->
+    <script src="{% static 'admin/theme/vendor/datatables/js/jquery.dataTables.min.js' %}"></script>
+    <script src="{% static 'admin/theme/js/plugins-init/datatables.init.js' %}"></script>
+  </body>
+</html>
+{% endblock %}

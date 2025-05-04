@@ -1,0 +1,104 @@
+{% extends 'farmer_header.html' %}
+{% block content %}
+{% load static %}
+
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Focus - Bootstrap Admin Dashboard</title>
+    <!-- Favicon icon -->
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="{% static 'admin/theme/images/favicon.png' %}"
+    />
+    <!-- Datatable -->
+    <link
+      href="{% static 'admin/theme/vendor/datatables/css/jquery.dataTables.min.css' %}"
+      rel="stylesheet"
+    />
+    <!-- Custom Stylesheet -->
+    <!-- <link href="{% static 'admin/theme/css/style.css' %}" rel="stylesheet" /> -->
+  </head>
+<body>
+    <div id="main-wrapper">
+      <div class="content-body">
+        <div class="container-fluid">
+          <!-- row -->
+
+          <div class="row">
+            <div class="col-12">
+              <div class="card">
+                <div class="card-header">
+                  <h4 class="card-title">Available Products to delivery</h4>
+                </div>
+                <div class="card-body">
+                  <div class="table-responsive">
+                    <table
+                      id="example"
+                      class="display"
+                      style="min-width: 845px"
+                    >
+                      <thead>
+                        <tr>
+                          <th>product name</th>
+                          <th>Buyer Name</th>
+                          <th>price</th>
+                          <th>Image</th>
+                          <th>Assign</th>
+                        </tr>
+                      </thead>
+                      <tbody> 
+                        {% for prt in prts %}
+                        {% if prt.cancelation_status == 0  %}
+                        <tr>
+                          
+                          <td>{{ prt.product_id.name }}</td>
+                          <td>{{ prt.user_id.us.name }}</td> 
+                          <td>{{ prt.product_id.price }}</td>
+                          <td>
+                            <img src="/media/{{ prt.product_id.image }}" width="90px" alt="" />
+                          </td>
+                          <td>
+                            
+                            <a href="{% url 'assignig' delivery_id prt.id %}" class="btn btn-success m-3">Assign</a>
+                            {% else %}
+                            
+                            {% endif %}
+                          </td>
+                        </tr>
+                        {% endfor %}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="footer">
+        <div class="copyright">
+          <p>
+            Copyright © Designed &amp; Developed by
+            <a href="#" target="_blank">Quixkit</a> 2019
+          </p>
+        </div>
+      </div>
+    </div>
+    <!-- Required vendors -->
+    <script src="{% static 'admin/theme/vendor/global/global.min.js' %}"></script>
+    <script src="{% static 'admin/theme/js/quixnav-init.js' %}"></script>
+    <script src="{% static 'admin/theme/js/custom.min.js' %}"></script>
+
+    <!-- Datatable -->
+    <script src="{% static 'admin/theme/vendor/datatables/js/jquery.dataTables.min.js' %}"></script>
+    <script src="{% static 'admin/theme/js/plugins-init/datatables.init.js' %}"></script>
+  </body>
+</html>
+{% endblock %}

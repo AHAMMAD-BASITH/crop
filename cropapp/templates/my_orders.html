@@ -1,0 +1,136 @@
+{% extends 'public_header.html' %}
+{% block content %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Focus - Bootstrap Admin Dashboard</title>
+    <!-- Favicon icon -->
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="{% static 'admin/theme/images/favicon.png' %}"
+    />
+    <!-- Datatable -->
+    <link
+      href="{% static 'admin/theme/vendor/datatables/css/jquery.dataTables.min.css' %}"
+      rel="stylesheet"
+    />
+    <!-- Custom Stylesheet -->
+    <!-- <link href="{% static 'admin/theme/css/style.css' %}" rel="stylesheet" /> -->
+  </head>
+
+  <body>
+  
+    <div id="main-wrapper">
+      <div class="content-body">
+        <div class="container-fluid">
+          <!-- row -->
+
+          <div class="row">
+            <div class="col-12">
+              <div class="card">
+                <div class="card-header">
+                  <h4 class="card-title">My Orders</h4>
+                </div>
+                <div class="card-body">
+                  <div class="table-responsive">
+                    <table
+                      id="example"
+                      class="display"
+                      style="min-width: 845px"
+                    >
+                      <thead>
+                        <tr>
+                          <th>product name</th>
+                          <th>price</th>
+                          <th>Image</th>
+                          <th></th>
+                          <th></th>
+                        </tr>
+                      </thead>
+                      <tbody> 
+                        {% for myord in myords %}
+                        <tr>
+                          <td>{{ myord.product_id.name }}</td>
+                          <td>{{ myord.product_id.price }}</td>
+                          <td>
+                            <img
+                              src="/media/{{ myord.product_id.image }}"
+                              width="90px"
+                              alt=""
+                            />
+                          </td>
+                          <td>
+                            {% if myord.cancelation_status == 1 %}
+                            <button class="btn btn-secondary m-3" disabled>
+                              Cancelled
+                            </button>
+                            <a
+                              class="btn-close m-3"
+                              href="{% url 'cancel_del' myord.id %}"
+                              ></a
+                            >
+                            
+                            {% elif myord.delivery_status == 1 %}
+                            <button class="btn btn-success m-3" disabled>
+                              Out for Delevery
+                            </button>
+                            <td>
+                              <a href="{% url 'repporting' myord.product_id.id %}" class="btn btn-danger">Repport</a>
+                            </td>
+
+                            {% elif myord.delivery_status == 2 %}
+                            <button class="btn btn-success m-3" disabled>
+                              Product deliverd
+                            </button>
+                            <td>
+                              
+                              <a href="{% url 'repporting' myord.product_id.id %}" class="text-danger">📝Repport</a>
+                            </td>
+                            {% else %}
+                            <a
+                              class="btn btn-danger m-3"
+                              href="{% url 'order_cancel' myord.id %}"
+                              >Cancel</a
+                            >
+                            {% endif %}
+                          </td>
+                        </tr>
+                        {% endfor %}
+                      </tbody>
+                    </table>
+                    <a class="btn btn-primary m-3" href="{% url 'cart_view' %}"
+                      >Cart</a
+                    >
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="footer">
+        <div class="copyright">
+          <p>
+            Copyright © Designed &amp; Developed by
+            <a href="#" target="_blank">Quixkit</a> 2019
+          </p>
+        </div>
+      </div>
+    </div>
+    <!-- Required vendors -->
+    <script src="{% static 'admin/theme/vendor/global/global.min.js' %}"></script>
+    <script src="{% static 'admin/theme/js/quixnav-init.js' %}"></script>
+    <script src="{% static 'admin/theme/js/custom.min.js' %}"></script>
+
+    <!-- Datatable -->
+    <script src="{% static 'admin/theme/vendor/datatables/js/jquery.dataTables.min.js' %}"></script>
+    <script src="{% static 'admin/theme/js/plugins-init/datatables.init.js' %}"></script>
+  </body>
+</html>
+{% endblock %}

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Enter Soil Data</title>
+</head>
+<body>
+    <h2>Enter Soil Data</h2>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Submit</button>
+    </form>
+
+    {% if crop_results is not None %}
+        <h3>Suitable Crops & Estimated Yield:</h3>
+        {% if crop_results %}
+            <ul>
+                {% for crop in crop_results %}
+                    <li>{{ crop.name }} — Estimated Yield: {{ crop.estimated_yield }}%</li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>No suitable crops found for the given data.</p>
+        {% endif %}
+    {% endif %}
+</body>
+</html>

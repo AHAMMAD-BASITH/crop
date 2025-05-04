@@ -1,0 +1,62 @@
+{% extends 'farmer_header.html' %}
+{% block content %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Alerts</title>
+    <style>
+        .containar{
+         margin: 30px;
+        }
+         table {
+             width: 100%;
+             border-collapse: collapse;
+             background: white;
+             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+             border-radius: 8px;
+             overflow: hidden;
+         }
+         th, td {
+             padding: 12px;
+             border: 1px solid #ddd;
+             text-align: left;
+         }
+         th {
+             background-color: #28a745;
+             color: white;
+         }
+     </style>
+</head>
+<body>
+    <div class="containar">
+        <table>
+            <thead>
+                <tr>
+                    <th>Complaint</th>
+                    <th>Replay</th>
+                    <th>Product</th>
+                    <th></th>   
+                </tr>
+            </thead>
+            <tbody>
+                {% for complain in complains %}
+                <tr>
+                    <td>{{ complain.comp }}</td>
+                    <td>{{ complain.reply }}</td>
+                    <td>{{ complain.product_id.name }}</td>
+                    <td>
+                        {% if complain.reply == null %}
+                        <a class="btn btn-primary m-3" href="{% url 'replay' complain.id %}">Write Replay</a>
+                        {% else %}
+                        <a class="btn btn-primary m-3" href="">Edit</a>
+                        <a class="btn btn-danger m-3" href="">Delete</a>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>
+{% endblock %}

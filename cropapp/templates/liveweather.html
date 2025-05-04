@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Live Weather</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background: linear-gradient(135deg, #87CEEB, #4682B4);
+            color: white;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            height: 100vh;
+            justify-content: center;
+        }
+
+        button {
+            background-color: #ffcc00;
+            color: #333;
+            border: none;
+            padding: 12px 20px;
+            font-size: 18px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        button:hover {
+            background-color: #ffdb4d;
+        }
+
+        .weather-card {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+            width: 80%;
+            max-width: 350px;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(10px);
+        }
+
+        .weather-card h2 {
+            margin: 0;
+            font-size: 22px;
+        }
+
+        .weather-info {
+            text-align: left;
+            margin-top: 10px;
+            font-size: 18px;
+        }
+
+        .weather-info span {
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <button onclick="getLocation()">Get Live Weather</button>
+    <div id="weather-result" class="weather-card" style="display: none;">
+        <h2>Weather Details</h2>
+        <div class="weather-info">
+            <p><span>Temperature:</span> <span id="temperature"></span>°C</p>
+            <p><span>Weather:</span> <span id="weather"></span></p>
+            <p><span>Humidity:</span> <span id="humidity"></span>%</p>
+            <p><span>Air Pressure:</span> <span id="pressure"></span> hPa</p>
+            <p><span>Wind Speed:</span> <span id="wind_speed"></span> m/s</p>
+            <p><span>UV Index:</span> <span id="uv_index"></span></p>
+        </div>
+    </div>
+
+    <script>
+        function getLocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(sendCoordinates, showError);
+            } else {
+                alert("Geolocation is not supported by this browser.");
+            }
+        }
+
+        function sendCoordinates(position) {
+            let lat = position.coords.latitude;
+            let lon = position.coords.longitude;
+
+            fetch(`/get_weather?lat=${lat}&lon=${lon}`)
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    alert("Error: " + data.error);
+                } else {
+                    document.getElementById("temperature").innerText = data.temperature;
+                    document.getElementById("weather").innerText = data.weather;
+                    document.getElementById("humidity").innerText = data.humidity;
+                    document.getElementById("pressure").innerText = data.pressure;
+                    document.getElementById("wind_speed").innerText = data.wind_speed;
+                    document.getElementById("uv_index").innerText = data.uv_index;
+                    document.getElementById("weather-result").style.display = "block";
+                }
+            })
+            .catch(error => console.error("Error fetching weather:", error));
+        }
+
+        function showError(error) {
+            alert("Error getting location: " + error.message);
+        }
+    </script>
+</body>
+</html>
