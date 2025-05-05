@@ -51,6 +51,15 @@ class user_edit_form(forms.ModelForm):
     'id_proof': forms.FileInput(attrs={'class': 'form-control'}),
 }
 
+class public_edit_form(forms.ModelForm):
+
+    class Meta:
+        model = public_user
+        fields = ['name', 'contact']
+        widgets = {
+    'name': forms.TextInput(attrs={'class': 'form-control'}),
+    'contact': forms.TextInput(attrs={'class': 'form-control'}),
+}
    
 
 class login_edit_form(forms.ModelForm):

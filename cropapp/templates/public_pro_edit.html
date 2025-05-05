@@ -1,23 +1,226 @@
 {% extends 'public_header.html' %}
 {% block content %}
 
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Edit Profile</title>
-    <!-- <link rel="stylesheet" href="style.css" /> -->
-  </head>
-  <body>
-    <div class="edit-profile-container">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Farmer Registration Form</title>
+  <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"> -->
+  <style>
+    html, body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(to right, #e6f5ea, #d6f5e3);
+    }
+
+    .form-container {
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+      box-sizing: border-box;
+    }
+
+    .form-box {
+      width: 100%;
+      max-width: 800px;
+      background-color: white;
+      border-radius: 20px;
+      box-shadow: 0 0 20px rgba(0, 128, 0, 0.1);
+      padding: 30px;
+    }
+
+    .form-box h2 {
+      text-align: center;
+      margin-bottom: 25px;
+      font-weight: bold;
+    }
+
+    .form-label {
+      margin-bottom: 4px;
+    }
+
+    .error-message {
+            color: red;
+            font-size: 14px;
+            margin-top: 5px;
+            display: block;
+      }
+
+    .btn-success {
+      background-color: #218838;
+      border-color: #1e7e34;
+      font-weight: 600;
+    }
+
+    @media (max-height: 750px) {
+      .form-box {
+        padding: 25px 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="form-container">
+    <div class="form-box">
       <h2>Edit Profile</h2>
-      <form method="post">
-        {% csrf_token %} 
-        {{ form.as_p }} 
-        {{ logform.as_p }}
-        <div class="form-actions">
-            <button type="submit" class="btn btn-primary">Save Changes</button>
+      <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="row g-3">
+          <!-- Left Column -->
+          <div class="col-md-12">
+            <label for="farmer_name" class="form-label">Full Name</label>
+            {{ form.name }}
+            <span class="error-message" id="farmer_name-error"></span>
+
+
+            <label for="contact" class="form-label mt-2">Contact Number</label>
+            {{ form.contact }}
+            <span class="error-message" id="contact-error"></span>
+
+
+          
+
+
+            
+            <label for="email" class="form-label mt-2">Email</label>
+            <!-- <input type="email" class="form-control" id="email" name="email" required> -->
+            {{ logform.email }}
+            <span class="error-message" id="email-error"></span>
+
+
+            <!-- <label for="password" class="form-label mt-2">Create Password</label>
+            <input type="password" class="form-control" id="password" name="password" required> -->
+ 
+
+          <!-- Submit Button -->
+          <div class="col-12 mt-4">
+            <button type="submit" class="btn btn-success w-100 py-2">Save Changes</button>
+          </div>
         </div>
       </form>
     </div>
-  </body>
+  </div>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+        const fields = ['name', 'contact','far_address','district','state','farm_size','main_products','id_proof','email','password'];
+
+        // Required field validation
+        fields.forEach(field => {
+            const input = document.querySelector(`input[name="${field}"]`);
+            const error = document.getElementById(`${field}-error`);
+            if (input) {
+                input.addEventListener('input', () => {
+                    if (input.value.trim() === '') {
+                        error.textContent = 'This field is required.';
+                    } else {
+                        error.textContent = '';
+                    }
+                });
+            }
+        });
+
+        // ✅ Name validation (letters and spaces only)
+        const nameInput = document.querySelector('input[name="name"]');
+        const nameError = document.getElementById('farmer_name-error');
+        if (nameInput) {
+            nameInput.addEventListener('input', function () {
+                const value = nameInput.value.trim();
+                const regex = /^[A-Za-z ]+$/;
+
+                if (value === '') {
+                    nameError.textContent = 'This field is required.';
+                } else if (!regex.test(value)) {
+                    nameError.textContent = 'Only letters and spaces are allowed.';
+                } else {
+                    nameError.textContent = '';
+                }
+            });
+        }
+
+        // ✅ Contact validation (10 digits)
+        const contactInput = document.querySelector('input[name="contact"]');
+        const contactError = document.getElementById('contact-error');
+        if (contactInput) {
+            contactInput.addEventListener('input', function () {
+                const value = contactInput.value.trim();
+                const regex = /^\d{10}$/;
+
+                if (value === '') {
+                    contactError.textContent = 'This field is required.';
+                } else if (!regex.test(value)) {
+                    contactError.textContent = 'Contact must be exactly 10 digits.';
+                } else {
+                    contactError.textContent = '';
+                }
+            });
+        }
+
+        // ✅ Email validation (valid email format)
+        const emailInput = document.querySelector('input[name="email"]');
+        const emailError = document.getElementById('email-error');
+        if (emailInput) {
+            emailInput.addEventListener('input', function () {
+                const value = emailInput.value.trim();
+                const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+                if (value === '') {
+                    emailError.textContent = 'This field is required.';
+                } else if (!regex.test(value)) {
+                    emailError.textContent = 'Please enter a valid email address.';
+                } else {
+                    emailError.textContent = '';
+                }
+            });
+        }
+
+        // ✅ Password validation (strength check)
+        const passwordInput = document.querySelector('input[name="password"]');
+        const passwordError = document.getElementById('password-error');
+        if (passwordInput) {
+            passwordInput.addEventListener('input', function () {
+                const value = passwordInput.value;
+                const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&]).{8,}$/;
+
+                if (value.trim() === '') {
+                    passwordError.textContent = 'This field is required.';
+                } else if (!regex.test(value)) {
+                    passwordError.textContent = 'Password must contain uppercase, lowercase, digit, special character, and be at least 8 characters.';
+                } else {
+                    passwordError.textContent = '';
+                }
+            });
+        }
+    });
+</script>
+</body>
+</html>
+
 {% endblock %}
+
+
+
+
+
+<!-- <head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Edit Profile</title>
+</head>
+<body>
+  <div class="edit-profile-container">
+    <h2>Edit Profile</h2>
+    <form method="post">
+      {% csrf_token %} 
+      {{ form.as_p }} 
+      {{ logform.as_p }}
+      <div class="form-actions">
+          <button type="submit" class="btn btn-primary">Save Changes</button>
+      </div>
+    </form>
+  </div>
+</body> -->

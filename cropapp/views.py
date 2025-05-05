@@ -285,7 +285,7 @@ def public_profile_view(request):
             logform.save()
             return redirect('public')
     else:
-        form=user_edit_form(instance=user_data)
+        form=public_edit_form(instance=user_data)
         logform = login_edit_form(instance = user_login_data)
     return render(request,'public_pro_edit.html',{'form':form,'logform':logform})
 
