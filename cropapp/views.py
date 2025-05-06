@@ -51,21 +51,21 @@ def register(request):
 
 def public_register(request):
     if request.method == 'POST':
-        detl=public_Form(request.POST)
-        paswrd=login_form(request.POST)
+        detl = public_Form(request.POST)
+        paswrd = login_form(request.POST)
         if detl.is_valid() and paswrd.is_valid():
-            login_data=paswrd.save(commit=False)
+            login_data = paswrd.save(commit=False)
             login_data.user_type = 'public'
-            login_data.save() 
-            reg_data=detl.save(commit=False)
-            reg_data.login_id=login_data
-
+            login_data.save()
+            reg_data = detl.save(commit=False)
+            reg_data.login_id = login_data
             reg_data.save()
-            return redirect ('login')
+            return redirect('login')
     else:
-        detl=public_Form()
-        paswrd=login_form()
-    return render (request,'public_registration.html',{'detl':detl,'paswrd':paswrd})
+        detl = public_Form()
+        paswrd = login_form()
+    return render(request, 'public_registration.html', {'detl': detl, 'paswrd': paswrd})
+
 
 
 def deliver_register(request):
