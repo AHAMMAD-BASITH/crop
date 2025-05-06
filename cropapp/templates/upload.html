@@ -6,47 +6,105 @@
     <title>Leaf Disease Prediction</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f8f9fa;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(to bottom, rgba(0, 128, 0, 0.8), rgba(255, 255, 255, 0.8)), 
+                        url('https://source.unsplash.com/1600x900/?plants,healing') no-repeat center center fixed;
+            background-size: cover;
             margin: 0;
             padding: 0;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
+            color: #333;
         }
         .container {
-            background: white;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            background-color: rgba(255, 255, 255, 0.9); /* Slight transparency */
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
             text-align: center;
-            max-width: 400px;
+            max-width: 500px;
+            width: 100%;
+            box-sizing: border-box;
+            animation: fadeIn 1s ease-in-out;
+        }
+        h2 {
+            font-size: 28px;
+            color: #3a3a3a;
+            margin-bottom: 20px;
+        }
+        p {
+            font-size: 16px;
+            line-height: 1.5;
+            color: #555;
         }
         input[type="file"] {
+            width: 100%;
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid #ddd;
             margin: 10px 0;
+            font-size: 16px;
+        }
+        button {
+            padding: 12px 25px;
+            font-size: 18px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #218838;
         }
         .prediction {
-            margin-top: 15px;
-            font-size: 18px;
-            color: green;
-            font-weight: bold;
+            margin-top: 20px;
+            font-size: 20px;
+            font-weight: 600;
+            color: #28a745;
+        }
+        .fertilizer-recommendation {
+            background-color: #f1f8e9;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+            font-size: 16px;
+            color: #6c757d;
+        }
+        .fertilizer-recommendation h4 {
+            margin: 0 0 10px;
+            color: #28a745;
+        }
+        
+        /* Keyframe Animation */
+        @keyframes fadeIn {
+            0% {
+                opacity: 0;
+            }
+            100% {
+                opacity: 1;
+            }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h2>Upload a Leaf Image</h2>
+        <h2>Upload a Leaf Image for Disease Prediction</h2>
         <form method="POST" enctype="multipart/form-data">
             {% csrf_token %}
             {{ form.as_p }}
-            <button type="submit">Predict</button>
+            <button type="submit">Predict Disease</button>
         </form>
 
         {% if prediction %}
             <p class="prediction">Predicted Disease: <strong>{{ prediction }}</strong></p>
-            <h4>Recommended Fertilizer:</h4>
-            <p>{{ fertilizer }}</p>
+            <div class="fertilizer-recommendation">
+                <h4>Recommended Fertilizer:</h4>
+                <p>{{ fertilizer }}</p>
+            </div>
         {% endif %}
     </div>
 </body>

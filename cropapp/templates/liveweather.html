@@ -5,10 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Live Weather</title>
     <style>
+        * {
+            box-sizing: border-box;
+        }
+
         body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            background: linear-gradient(135deg, #87CEEB, #4682B4);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #4facfe, #00f2fe);
             color: white;
             margin: 0;
             padding: 0;
@@ -19,51 +22,85 @@
             justify-content: center;
         }
 
+        h2 {
+            margin: 0 0 10px;
+            font-size: 24px;
+        }
+
         button {
-            background-color: #ffcc00;
-            color: #333;
+            background-color: #ffd700;
+            color: #222;
             border: none;
-            padding: 12px 20px;
+            padding: 14px 24px;
             font-size: 18px;
-            border-radius: 8px;
+            border-radius: 10px;
             cursor: pointer;
-            transition: background 0.3s;
+            transition: background 0.3s ease;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
         }
 
         button:hover {
-            background-color: #ffdb4d;
+            background-color: #ffea00;
         }
 
         .weather-card {
-            background: rgba(255, 255, 255, 0.2);
-            padding: 20px;
-            border-radius: 10px;
-            margin-top: 20px;
-            width: 80%;
-            max-width: 350px;
-            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
-            backdrop-filter: blur(10px);
+            background: rgba(255, 255, 255, 0.15);
+            padding: 25px;
+            border-radius: 12px;
+            margin-top: 30px;
+            width: 90%;
+            max-width: 400px;
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25);
+            backdrop-filter: blur(12px);
+            animation: fadeIn 1s ease-in-out;
+            display: none;
         }
 
-        .weather-card h2 {
-            margin: 0;
-            font-size: 22px;
+        .weather-card.active {
+            display: block;
         }
 
         .weather-info {
             text-align: left;
-            margin-top: 10px;
-            font-size: 18px;
+            font-size: 17px;
+            line-height: 1.6;
+        }
+
+        .weather-info p {
+            margin: 8px 0;
         }
 
         .weather-info span {
-            font-weight: bold;
+            font-weight: 600;
+        }
+
+        .icon {
+            font-size: 48px;
+            margin-bottom: 10px;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (max-width: 480px) {
+            .weather-card {
+                padding: 20px;
+            }
+
+            button {
+                font-size: 16px;
+                padding: 12px 20px;
+            }
         }
     </style>
 </head>
 <body>
-    <button onclick="getLocation()">Get Live Weather</button>
-    <div id="weather-result" class="weather-card" style="display: none;">
+    <button onclick="getLocation()">🌍 Get Live Weather</button>
+
+    <div id="weather-result" class="weather-card">
+        <div class="icon">⛅</div>
         <h2>Weather Details</h2>
         <div class="weather-info">
             <p><span>Temperature:</span> <span id="temperature"></span>°C</p>
@@ -100,7 +137,10 @@
                     document.getElementById("pressure").innerText = data.pressure;
                     document.getElementById("wind_speed").innerText = data.wind_speed;
                     document.getElementById("uv_index").innerText = data.uv_index;
-                    document.getElementById("weather-result").style.display = "block";
+
+                    // Update weather icon if needed here dynamically
+
+                    document.getElementById("weather-result").classList.add("active");
                 }
             })
             .catch(error => console.error("Error fetching weather:", error));
