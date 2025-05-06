@@ -77,6 +77,18 @@
 
             <li class="dropdown">
               <a href="#"
+                ><span>Services</span>
+                <i class="bi bi-chevron-down toggle-dropdown"></i
+              ></a>
+              <ul>
+                <li><a href="{% url 'weather' %}">live weather</a></li>
+                <li><a href="{% url 'upload_image' %}">disease detection</a></li>
+                <li><a href="{% url 'enter_soil_data' %}">yield predict</a></li>
+              </ul>
+            </li>
+
+            <li class="dropdown">
+              <a href="#"
                 ><span>Notifications</span>
                 <i class="bi bi-chevron-down toggle-dropdown"></i
               ></a>
