@@ -1,18 +1,4 @@
-<html>
-  <head>
-    <title>Payment Form</title>
-  </head>
-  <body>
-    <center>
-      <h1>Payment Gateway</h1>
-      <form method="post" enctype="multipart/form-data">
-        {% csrf_token %} 
-        {{ product.as_p }}                          
-        <button type="submit">Submit</button>
-      </form>
-    </center>
-  </body>
-</html>
+
 
 
 {% extends 'farmer_header.html' %}
@@ -25,16 +11,40 @@
 <body>
   <center>
     <div class="containar">
-        <h1>Add products</h1>
+        <h1>Edit Product</h1>
         <form method="post" enctype="multipart/form-data">
-            {% csrf_token %}
-            {{ product.as_p }}                          
-            <button type="submit">Submit</button>
-        </form>
+          {% csrf_token %}
+      
+          <p>
+              <label for="id_category"><strong>Category:</strong></label><br>
+              {{ product.category }}
+          </p>
+      
+          <p>
+              <label for="id_name"><strong>Name:</strong></label><br>
+              {{ product.name }}
+          </p>
+      
+          <p>
+              <label for="id_image"><strong>Image:</strong></label><br>
+              {% if product_instance.image %}
+                  <img src="{{ product_instance.image.url }}" alt="Product Image" width="150"><br>
+              {% endif %}
+              {{ product.image }}
+          </p>
+      
+          <p>
+              <label for="id_price"><strong>Price:</strong></label><br>
+              {{ product.price }}
+          </p>
+      
+          <button type="submit">Submit</button>
+      </form>
+      
     </div>
   </center>
-    
 </body>
+
 </html>
 <style>
   body{

@@ -326,7 +326,7 @@ def product_edit(request,id):
         return redirect('product_view')
     else:
         form=products_form(instance=product)
-    return render(request ,'product_edit.html',{'product' : form})
+    return render(request, 'product_edit.html', {'product': form, 'product_instance': product})
 
 def public_pro_view(request):
     all_product=products.objects.all()
