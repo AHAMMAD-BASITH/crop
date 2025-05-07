@@ -77,6 +77,7 @@ class farmer_cart(models.Model):
     user_id = models.ForeignKey(login,on_delete=models.CASCADE,null=True,blank=True,related_name='farmer')
     payment_status = models.IntegerField(default=0)
     cancelation_status = models.IntegerField(default=0)
+    
     current_date = models.DateTimeField(auto_now_add=True)
 
 class farmer_payment(models.Model):

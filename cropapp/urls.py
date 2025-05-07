@@ -42,6 +42,7 @@ urlpatterns = [
     path('farmer_cart/<int:id>/',views.f_add_to_cart,name='farmer_cart'),
     path('far_payment/<int:id>/',views.far_payment_dtel,name='far_payment'),
     path('frmr_pro_view/',views.far_cart_view,name='frmr_pro_view'),
+    path('frmr_pro_del/<int:id>/',views.far_cart_product_del,name='frmr_pro_del'),
     path('farmer_order_view/',views.far_order,name='farmer_order_view'),
     path('farmer_order_cancel/<int:id>',views.far_order_cancel,name='farmer_order_cancel'),
     path('gov_order_view/',views.gov_orders,name='gov_order_view'),

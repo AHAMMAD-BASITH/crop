@@ -5,46 +5,76 @@
 <head>
     <title>Enter Soil Data</title>
     <style>
-        
+        .page-wrapper {
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(to right, #2c3e50, #3498db);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 40px 10px;
+        }
+
         .containar {
-            background: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+            background: #ffffff10;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
             max-width: 600px;
             width: 100%;
             text-align: center;
+            backdrop-filter: blur(10px);
         }
 
         h2 {
-            color: #f7c72c;
-            margin-bottom: 20px;
+            color: #f1c40f;
+            margin-bottom: 25px;
+            font-size: 28px;
         }
 
         form {
             margin-bottom: 20px;
         }
 
+        form p {
+            text-align: left;
+            color: #ffffff;
+            font-size: 16px;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            margin-bottom: 15px;
+            border: none;
+            border-radius: 6px;
+            background-color: #ecf0f1;
+            font-size: 15px;
+        }
+
         button {
-            background-color: #4CAF50;
+            background-color: #27ae60;
             color: white;
             border: none;
-            padding: 10px 20px;
+            padding: 12px 25px;
             font-size: 16px;
             cursor: pointer;
-            border-radius: 5px;
+            border-radius: 6px;
             transition: background-color 0.3s ease;
         }
 
         button:hover {
-            background-color: #45a049;
+            background-color: #219150;
         }
 
         .results {
-            background-color: rgba(0, 0, 0, 0.6);
+            background-color: #ffffff20;
             padding: 20px;
             border-radius: 10px;
             margin-top: 20px;
+            color: #fff;
         }
 
         .results ul {
@@ -53,20 +83,33 @@
         }
 
         .results li {
-            background-color: #333;
+            background-color: #34495e;
             margin-bottom: 10px;
-            padding: 10px;
+            padding: 12px;
             border-radius: 5px;
+            font-size: 16px;
         }
 
         .results p {
-            color: #ffcc00;
+            color: #f39c12;
         }
 
+        @media screen and (max-width: 600px) {
+            .container {
+                padding: 20px;
+            }
+
+            h2 {
+                font-size: 24px;
+            }
+
+            button {
+                width: 100%;
+            }
+        }
     </style>
 </head>
-<body>
-<center>
+<div class="page-wrapper">
     <div class="containar">
         <h2>Enter Soil Data</h2>
         <form method="post">
@@ -90,7 +133,6 @@
             </div>
         {% endif %}
     </div>
-    </center>
-</body>
+</div>
 </html>
 {% endblock %}

@@ -27,78 +27,50 @@
 
   <body>
     <div id="main-wrapper">
-      <div class="content-body">
-        <div class="container-fluid">
-          {% if messages %}
-          <ul>
-            {% for message in messages %}
-            <li class="text-danger font-weight-bold">{{ message }}</li>
-            {% endfor %}
-          </ul>
-          {% endif %}
-          <!-- row -->
-
-          <div class="row">
-            <div class="col-12">
-              <div class="card">
-                <div class="card-header">
-                  <h4 class="card-title">Cart</h4>
-                </div>
-                <div class="card-body">
-                  <div class="table-responsive">
-                    <table
-                      id="example"
-                      class="display"
-                      style="min-width: 845px"
-                    >
-                      <thead>
-                        <tr>
-                          <th>Image</th>
-                          <th>Category</th>
-                          <th>Name</th>
-                          <th>price</th>
-                          <th></th>
-                        </tr>
-                      </thead>
-                      <tbody>
-            
-                        {% for cart_product in cart_products %}
-                        <tr>
-                          <td>
-                            <img
-                              src="/media/{{cart_product.product_id.image}}"
-                              width="90px"
-                              alt=""
-                            />
-                          </td>
-                          <td>{{cart_product.product_id.category}}</td>
-                          <td>{{cart_product.product_id.name}}</td>
-                          <td>{{cart_product.product_id.price}}</td>
-                          <td>
-                            <a
-                              class="btn btn-danger"
-                              href=""
-                              >Delete</a
-                            >
-                            <a
-                              class="btn btn-success"
-                              href="{% url 'far_payment' cart_product.id %}"
-                              >Buy</a
-                            >
-                          </td>
-                        </tr>
-                        {% endfor %}  
-                      </tbody>
-                    </table>
-                    <a class="btn btn-primary m-3" href="{% url 'subsidy_pro' %}">Add product</a>
-                    <a class="btn btn-primary m-3" href="{% url 'farmer_order_view' %}">My Orders</a>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+      <form method="post" id="paymentForm" action="../far_payment/{{ cart_products.0.id }}/">
+        {% csrf_token %}
+        
+        <!-- Hidden input to pass total -->
+        <input type="hidden" name="total_amount" id="totalAmountInput" value="0" />
+    
+        <div class="table-responsive">
+            <table id="example" class="display" style="min-width: 845px">
+                <thead>
+                    <tr>
+                        <th>Image</th>
+                        <th>Category</th>
+                        <th>Name</th>
+                        <th>Price</th>
+                        <th>Quantity</th>
+                        <th>Total</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for cart_product in cart_products %}
+                    <tr>
+                        <td><img src="/media/{{ cart_product.product_id.image }}" width="90px" alt="" /></td>
+                        <td>{{ cart_product.product_id.category }}</td>
+                        <td>{{ cart_product.product_id.name }}</td>
+                        <td class="price">{{ cart_product.product_id.price }}</td>
+                        <td>
+                            <input type="number" name="quantity_{{ cart_product.id }}" class="quantity" min="1" value="1" />
+                        </td>
+                        <td class="total">0</td>
+                        <td>
+                            <a class="btn btn-danger" href="{% url 'frmr_pro_del' cart_product.id %}">X</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+    
+            <h4 class="mt-3">Grand Total: ₹ <span id="grandTotal">0</span></h4>
+            <button type="submit" class="btn btn-success">Check Out</button>
         </div>
-      </div>
+    </form>
+    
+      
       <div class="footer">
         <div class="copyright">
           <p>
@@ -109,6 +81,37 @@
       </div>
     </div>
     <!-- Required vendors -->
+    <script>
+      function updateTotals() {
+        const rows = document.querySelectorAll("tbody tr");
+        let grandTotal = 0;
+    
+        rows.forEach((row) => {
+          const price = parseFloat(row.querySelector(".price").textContent);
+          const quantity = parseInt(row.querySelector(".quantity").value);
+          const total = price * quantity;
+    
+          row.querySelector(".total").textContent = total.toFixed(2);
+          grandTotal += total;
+        });
+    
+        // Update hidden input
+        document.getElementById("totalAmountInput").value = grandTotal.toFixed(2);
+    
+        // Update form action with total_amount
+        const form = document.getElementById("paymentForm");
+        const baseAction = form.getAttribute("action").split("?")[0]; // Remove any previous ?total_amount
+        form.setAttribute("action", `${baseAction}?total_amount=${grandTotal.toFixed(2)}`);
+      }
+    
+      document.querySelectorAll(".quantity").forEach((input) => {
+        input.addEventListener("input", updateTotals);
+      });
+    
+      updateTotals(); // Run once initially
+    </script>
+     
+    
     <script src="{% static 'admin/theme/vendor/global/global.min.js' %}"></script>
     <script src="{% static 'admin/theme/js/quixnav-init.js' %}"></script>
     <script src="{% static 'admin/theme/js/custom.min.js' %}"></script>

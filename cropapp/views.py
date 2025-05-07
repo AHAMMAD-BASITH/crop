@@ -124,6 +124,10 @@ def logins(request):
                     elif user.user_type == 'delivery':
                         request.session['deliver_id'] = user.id
                         return redirect('delivery')
+                    
+                    elif user.user_type == 'admin':
+                        request.session['admin'] = user.id
+                        return redirect('admins')
                 else:
                     messages.error(request, 'Invalid password')
             except login.DoesNotExist:
@@ -135,6 +139,8 @@ def logins(request):
 
 def delivery_profile_view(request):
     user_id=request.session.get('deliver_id')
+    if not user_id :
+        return redirect ('index')
 
     user_login_data=get_object_or_404(login,id=user_id)
     user_data=get_object_or_404(delivery_boy,login_id=user_login_data.id)
@@ -175,6 +181,8 @@ def purchases_view(request):
 
 def comp_repporting(request,id):
     user_id=request.session.get('public_id')
+    if not user_id :
+        return redirect ('index')
     us_id=get_object_or_404(login,id=user_id)
     pro_id=get_object_or_404(products,id=id)
     if request.method=="POST":
@@ -187,12 +195,16 @@ def comp_repporting(request,id):
             comp.save()
             return redirect('public_order_view')
     else:
+        if not user_id :
+            return redirect ('index')
         form=complaintform()
     return render(request,'complaint.html',{'form':form})
 
 
 def usr_comp_view(request):
     user_id=request.session.get('public_id')
+    if not user_id :
+        return redirect ('index')
     us_id=get_object_or_404(login,id=user_id)
     us_comp=complaint.objects.filter(userid=us_id)
     
@@ -357,6 +369,11 @@ def cart_product_del(request,id):
     cart_product.delete()
     return redirect('cart_view')
 
+def far_cart_product_del(request,id):
+    cart_product=get_object_or_404(farmer_cart,id=id)
+    cart_product.delete()
+    return redirect('frmr_pro_view')
+
 def payment_dtel(request,id,cartid):
     user_id=request.session.get('public_id')
     user_login_data = get_object_or_404(login,id=user_id)
@@ -492,6 +509,7 @@ def far_cart_view(request):
     far_id=request.session.get('farmer_id')
     user_login_data = get_object_or_404(login,id=far_id)
     cart_product=farmer_cart.objects.filter(user_id=user_login_data,payment_status=0)
+    
     return render(request,'frmr_pro_view.html',{'cart_products' : cart_product})
 
 
@@ -500,28 +518,66 @@ def cart_product_del(request,id):
     cart_product.delete()
     return redirect('cart_view')
 
-def far_payment_dtel(request,id):
-    far_id=request.session.get('farmer_id')
-    farmer_login_data = get_object_or_404(login,id=far_id)
-    crt_id = get_object_or_404(farmer_cart,id=id)
-    if request.method=='POST':
+from decimal import Decimal
 
-        payment=farmer_payment_form(request.POST)
-        if payment.is_valid():
+def far_payment_dtel(request, id):
+    far_id = request.session.get('farmer_id')
+    farmer_login_data = get_object_or_404(login, id=far_id)
+    crt_id = get_object_or_404(farmer_cart, id=id)
 
-            payment_data=payment.save(commit=False)
-            payment_data.login_id=farmer_login_data
-            payment_data.cart_id=crt_id
-            payment_data.save()
-            # c=cart.objects.get(id=crt_id)
-            c= get_object_or_404(farmer_cart,id=id)
-            c.payment_status=1
-            c.save()
-            return redirect('frmr_pro_view')
-    else:
-        payment=farmer_payment_form()
+    # Initialize total_amount and payment
+    total_amount = None
+    payment = farmer_payment_form()  # Always defined
 
-    return render( request ,'farmer_payment.html',{'payment':payment})
+    if request.method == 'POST':
+        # Try to get total_amount from query string OR hidden input
+        total_amount = request.GET.get('total_amount') or request.POST.get('total_amount')
+        print(f"Total amount received: {total_amount}")
+
+        if total_amount:
+            # Ensure the total_amount is a valid numeric value (float or decimal)
+            try:
+                total_amount = Decimal(total_amount)  # Use Decimal for precision with monetary values
+            except:
+                print("Invalid total amount received.")
+                return render(request, 'farmer_payment.html', {
+                    'payment': payment,
+                    'total_amount': total_amount,
+                    'error': "Invalid total amount."
+                })
+
+            payment = farmer_payment_form(request.POST)
+            if payment.is_valid():
+                payment_data = payment.save(commit=False)
+                payment_data.login_id = farmer_login_data
+                payment_data.cart_id = crt_id
+                payment_data.amount = total_amount
+                payment_data.save()
+
+                for key, value in request.POST.items():
+                    if key.startswith("quantity_"):
+                        product_cart_id = key.split("_")[1]
+                        quantity = int(value)
+                        try:
+                            cart_item = farmer_cart.objects.get(id=product_cart_id)
+                            cart_item.quantity = quantity
+                            cart_item.save()
+                        except farmer_cart.DoesNotExist:
+                            print(f"Cart item with ID {product_cart_id} not found.")
+
+                crt_id.payment_status = 1
+                crt_id.save()
+                return redirect('frmr_pro_view')
+            else:
+                print("Form errors:", payment.errors)
+        else:
+            print("Total amount is missing in POST data or URL query.")
+
+    return render(request, 'farmer_payment.html', {
+        'payment': payment,
+        'total_amount': total_amount
+    })
+
 
 def far_order(request):
     far=request.session.get('farmer_id')
