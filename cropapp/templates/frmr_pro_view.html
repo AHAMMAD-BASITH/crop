@@ -41,6 +41,7 @@
                         <th>Category</th>
                         <th>Name</th>
                         <th>Price</th>
+                        <th>Subsidy Price</th>
                         <th>Quantity</th>
                         <th>Total</th>
                         <th></th>
@@ -52,7 +53,8 @@
                         <td><img src="/media/{{ cart_product.product_id.image }}" width="90px" alt="" /></td>
                         <td>{{ cart_product.product_id.category }}</td>
                         <td>{{ cart_product.product_id.name }}</td>
-                        <td class="price">{{ cart_product.product_id.price }}</td>
+                        <td >{{ cart_product.product_id.price }}</td>
+                        <td class="price">{{ cart_product.product_id.subsidy_price }}</td>
                         <td>
                             <input type="number" name="quantity_{{ cart_product.id }}" class="quantity" min="1" value="1" />
                         </td>

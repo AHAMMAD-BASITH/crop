@@ -231,12 +231,16 @@ def delcomp(request,id):
 
 def far_comp_view(request):
     far_id=request.session.get('farmer_id')
+    if not far_id:
+        return redirect('index')
     fr_id=get_object_or_404(login,id=far_id)
     compl=complaint.objects.filter(product_id__login_id=fr_id)
     return render(request,'far_complaint_view.html',{'complains':compl})
 
 def far_comp_replay(request,id):
     far_id=request.session.get('farmer_id')
+    if not  far_id:
+        return redirect ('index')
     fr_id=get_object_or_404(login,id=far_id)
     complai=complaint.objects.get(id=id )
 
@@ -267,6 +271,8 @@ def usre_edit(request,id):
 def profile_view(request):
     # user = get_object_or_404(login,id=id)
     user_id=request.session.get('farmer_id')
+    if not user_id :
+        return redirect ('index')
     user_login_data = get_object_or_404(login,id=user_id)
     user_data = get_object_or_404(user,login_id=user_login_data)
 
@@ -286,6 +292,8 @@ def profile_view(request):
 def public_profile_view(request):
     # user = get_object_or_404(login,id=id)
     user_id=request.session.get('public_id')
+    if not user_id :
+        return redirect ('index')
     user_login_data = get_object_or_404(login,id=user_id)
     user_data = get_object_or_404(public_user,login_id=user_login_data)
 
@@ -304,6 +312,8 @@ def public_profile_view(request):
 
 def product_add(request):
     user_id=request.session.get('farmer_id')
+    if not user_id :
+        return redirect ('index')
     user_login_data = get_object_or_404(login,id=user_id)
     if request.method=='POST':
 
@@ -320,6 +330,8 @@ def product_add(request):
 
 def product_view(request):
     user_id=request.session.get('farmer_id')
+    if not user_id :
+        return redirect ('index')
     user_login_data = get_object_or_404(login,id=user_id)
     all_product=products.objects.filter(login_id=user_login_data)
     return render(request,'product_view.html',{'all_products' : all_product})
@@ -346,9 +358,11 @@ def public_pro_view(request):
 
 def add_to_cart(request,p_id):
     u_id=request.session.get('public_id')
+    if not u_id :
+        return redirect ('index')
     user_login_data = get_object_or_404(login, id=u_id)
     product=get_object_or_404(products, id=p_id)
-    if cart.objects.filter(product_id=product,user_id=user_login_data,cancelation_status=0).exists():
+    if cart.objects.filter(product_id=product,user_id=user_login_data,cancelation_status=0,delivery_status=0).exists():
         messages.success(request,'product already exists')
     else:
         cart_data = cart.objects.create(
@@ -359,6 +373,8 @@ def add_to_cart(request,p_id):
 
 def cart_view(request):
     user_id=request.session.get('public_id')
+    if not user_id :
+        return redirect ('index')
     user_login_data = get_object_or_404(login,id=user_id)
     cart_product=cart.objects.filter(user_id=user_login_data,payment_status=0)
     return render(request,'cart.html',{'cart_products' : cart_product})
@@ -369,6 +385,11 @@ def cart_product_del(request,id):
     cart_product.delete()
     return redirect('cart_view')
 
+# def far_cart_product_del(request,id):
+#     cart_product=get_object_or_404(farmer_cart,id=id)
+#     cart_product.delete()
+#     return redirect('cart_view')
+
 def far_cart_product_del(request,id):
     cart_product=get_object_or_404(farmer_cart,id=id)
     cart_product.delete()
@@ -376,6 +397,8 @@ def far_cart_product_del(request,id):
 
 def payment_dtel(request,id,cartid):
     user_id=request.session.get('public_id')
+    if not user_id :
+        return redirect ('index')
     user_login_data = get_object_or_404(login,id=user_id)
     crt_id = get_object_or_404(cart,id=cartid)
     if request.method=='POST':
@@ -399,6 +422,8 @@ def payment_dtel(request,id,cartid):
 
 def my_order(request):
     user=request.session.get('public_id')
+    if not user :
+        return redirect ('index')
     users_id = get_object_or_404(login,id=user)
     myord = cart.objects.filter(user_id=users_id,payment_status=1)
     return render(request,'my_orders.html',{'myords':myord})
@@ -406,6 +431,8 @@ def my_order(request):
 
 def farmer_order_view(request):
     farmer = request.session.get('farmer_id')
+    if not farmer :
+        return redirect ('index')
     farmer_id = get_object_or_404(login, id=farmer)
     prt = cart.objects.filter(product_id__login_id=farmer_id, payment_status=1).select_related('user_id__us')
     return render(request, 'farmer_order_view.html', {'prts': prt})
@@ -413,6 +440,8 @@ def farmer_order_view(request):
 
 def my_order_cancel(request,id):
     user=request.session.get('public_id')
+    if not user :
+        return redirect ('index')
     users_id = get_object_or_404(login,id=user)
     crt_id = get_object_or_404(cart,id=id)
     crt_id.cancelation_status=1
@@ -494,6 +523,8 @@ def far_subsidy_view(request):
 
 def f_add_to_cart(request,id):
     f_id=request.session.get('farmer_id')
+    if not f_id :
+        return redirect ('index')
     farmer_login_data = get_object_or_404(login, id=f_id)
     product=get_object_or_404(gov_products, id=id)
     if farmer_cart.objects.filter(product_id=product,user_id=farmer_login_data,cancelation_status=0).exists():
@@ -507,21 +538,22 @@ def f_add_to_cart(request,id):
 
 def far_cart_view(request):
     far_id=request.session.get('farmer_id')
+    if not far_id :
+        return redirect ('index')
     user_login_data = get_object_or_404(login,id=far_id)
     cart_product=farmer_cart.objects.filter(user_id=user_login_data,payment_status=0)
     
     return render(request,'frmr_pro_view.html',{'cart_products' : cart_product})
 
 
-def cart_product_del(request,id):
-    cart_product=get_object_or_404(farmer_cart,id=id)
-    cart_product.delete()
-    return redirect('cart_view')
+
 
 from decimal import Decimal
 
 def far_payment_dtel(request, id):
     far_id = request.session.get('farmer_id')
+    if not far_id :
+        return redirect ('index')
     farmer_login_data = get_object_or_404(login, id=far_id)
     crt_id = get_object_or_404(farmer_cart, id=id)
 
@@ -581,12 +613,16 @@ def far_payment_dtel(request, id):
 
 def far_order(request):
     far=request.session.get('farmer_id')
+    if not far :
+        return redirect ('index')
     far_id = get_object_or_404(login,id=far)
     myord = farmer_cart.objects.filter(user_id=far_id,payment_status=1)
     return render(request,'far_my_orders.html',{'myords':myord})
 
 def far_order_cancel(request,id):
     far=request.session.get('farmer_id')
+    if not far :
+        return redirect ('index')
     far_id = get_object_or_404(login,id=far)
     crt_id = get_object_or_404(farmer_cart,id=id)
     crt_id.cancelation_status=1
@@ -636,6 +672,8 @@ def fa_notification_view(request):
 
 def address_add(request,id):
     user=request.session.get('public_id')
+    if not user :
+        return redirect ('index')
     logid=get_object_or_404(login,id=user)
     cart_id = get_object_or_404(cart,id = id )
     if request.method =="POST":

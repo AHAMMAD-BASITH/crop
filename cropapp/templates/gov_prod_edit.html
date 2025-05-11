@@ -14,13 +14,12 @@
             background-color: #f4f4f4;
             margin: 0;
             padding: 0;
-            display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
         }
 
-        .container {
+        .containar {
             background: white;
             padding: 20px;
             border-radius: 10px;
@@ -55,7 +54,8 @@
     </style>
 </head>
 <body>
-    <div class="container">
+    <center>
+        <div class="containar">
         <h1>Edit Product</h1>
         <form method="post" enctype="multipart/form-data">
             {% csrf_token %} 
@@ -63,6 +63,8 @@
             <button type="submit">Submit</button>
         </form>
     </div>
+    </center>
+    
 </body>
 </html>
 {% endblock %}
